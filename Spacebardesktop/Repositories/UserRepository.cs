@@ -25,9 +25,9 @@ namespace Spacebardesktop.Repositories
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "select *from [tblAdm] where Nome=@Nome and [Senha]=@Senha";
-                command.Parameters.Add("@Nome", SqlDbType.NVarChar).Value = credential.UserName;
-                command.Parameters.Add("@Senha", SqlDbType.NVarChar).Value = credential.Password;
+                command.CommandText = "select *from [tblUsuario] where login_usuario=@login_usuario and [senha_usuario]=@senha_usuario";
+                command.Parameters.Add("@login_usuario", SqlDbType.NVarChar).Value = credential.UserName;
+                command.Parameters.Add("@senha_usuario", SqlDbType.NVarChar).Value = credential.Password;
                 ValidUser = command.ExecuteScalar() == null ? false : true;
             }
 
@@ -52,8 +52,8 @@ namespace Spacebardesktop.Repositories
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "select *from [tblAdm] where Nome=@Nome";
-                command.Parameters.Add("@Nome", SqlDbType.NVarChar).Value = username;
+                command.CommandText = "select *from [tblUsuario] where login_usuario=@login_usuario";
+                command.Parameters.Add("@login_usuario", SqlDbType.NVarChar).Value = username;
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())

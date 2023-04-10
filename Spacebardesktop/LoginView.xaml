@@ -17,11 +17,11 @@
         <viewModel:MainViewModel/>
     </Window.DataContext>
 
-    <!--Window.Resources>
+    <Window.Resources>
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
-            <local:/>
+            <local:HomeView/>
         </DataTemplate>
-    </Window.Resources>-->
+    </Window.Resources>
 
 
     <Border  CornerRadius="10"                     

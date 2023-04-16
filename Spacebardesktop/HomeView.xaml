@@ -4,26 +4,29 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Spacebardesktop"
+             xmlns:viewmodel="clr-namespace:Spacebardesktop.ViewModels"
              mc:Ignorable="d" 
              Background="White" Height="348" Width="617">
 
     <Grid Margin="10">
 
+        
         <StackPanel
             Orientation="Vertical"
-             Margin="79,30,58,25" Grid.RowSpan="2">
+             Margin="79,30,58,1">
 
+            <TextBlock 
+                Text="Titulo"
+                Margin="10,0,0,0"/>
             <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8">
+             
                 <TextBox
             x:Name="titulo_post"
-            Text="Titulo"
             FontSize="13"
             FontWeight="Medium"
             FontFamily="Segoe UI"
-            Foreground="Silver"
             Height="26"
              BorderBrush="White"
-            
             VerticalContentAlignment="Center"
             Margin="5,1,5,1" 
             RenderTransformOrigin="0.61,0.464"
@@ -36,7 +39,7 @@
                 />
             <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8">
                 <TextBox
-            x:Name="aaa"
+            x:Name="data_post"
             
             FontSize="13"
             FontWeight="Medium"
@@ -53,9 +56,9 @@
 
             <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,30,0,0">
                 <TextBox
-               x:Name="aaaa"
+               x:Name="desc_post"
             FontSize="13"
-             Text="Dê uma descrição á sua postagem"
+            Text="Dê uma descrição á sua postagem"
             TextAlignment="Left"
             FontWeight="Medium"
             FontFamily="Segoe UI"
@@ -78,7 +81,8 @@
                         Cursor="Hand"
                         Grid.Column="2" 
                         RenderTransformOrigin="0.5,0.5" 
-                        Margin="300,20,5,3" Click="BtnLogin_Click"
+                        Margin="300,20,5,3" 
+                        Click="btnPostar_Click"
                         >
 
                 <Button.Style>

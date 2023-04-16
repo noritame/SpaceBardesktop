@@ -5,7 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using Spacebardesktop.View;
 using Spacebardesktop.ViewModels;
 
 namespace Spacebardesktop
@@ -29,6 +28,6 @@ namespace Spacebardesktop
 
                 }
             };
-        }
+            }
      }
 }

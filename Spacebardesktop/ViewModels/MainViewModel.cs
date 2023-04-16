@@ -9,7 +9,6 @@ using System.Windows.Input;
 using FontAwesome.Sharp;
 using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
-using Spacebardesktop.View;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -52,31 +51,31 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowCustomerViewCommand { get; }
+        //public ICommand ShowCustomerViewCommand { get; }
 
         public MainViewModel()
         {
            userRepository = new UserRepository();
            CurrentUserAccount = new UserAccountModel();
-           
+
 
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
+            //ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
 
             //Default View
             ExecuteShowHomeViewCommand(null);
-            ExecuteShowCustomerViewCommand(null);
+            //ExecuteShowCustomerViewCommand(null);
             LoadCurrentUserData();
         }
 
-        private void ExecuteShowCustomerViewCommand(object obj)
-        {
-            CurrentChildView = new CustomViewModel();
-            Caption = "Customer"; 
-            Icon = IconChar.UserGroup;
-        }
+        //private void ExecuteShowCustomerViewCommand(object obj)
+        //{
+        //    CurrentChildView = new CustomViewModel();
+        //    Caption = "Dashboard"; 
+        //    Icon = IconChar.Home;
+        //}
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
@@ -97,7 +96,7 @@ namespace Spacebardesktop.ViewModels
             else
             {
                CurrentUserAccount.DisplayName="Usuario Invalido";
-              // Hide child views
+
             }
         }
     }

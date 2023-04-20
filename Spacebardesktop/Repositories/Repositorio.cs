@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace Spacebardesktop.Repositories
 {
-   public abstract class Repositorio
+   public class Repositorio
     {
         private readonly string connectionString;
         public Repositorio()//conecxao com o sql.

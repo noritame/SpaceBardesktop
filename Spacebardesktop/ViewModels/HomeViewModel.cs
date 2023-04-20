@@ -42,7 +42,7 @@ namespace Spacebardesktop.ViewModels
         public ICommand criarPost {get; }
     
     }
-    public HomeViewModel() {
+    //public HomeViewModel() {
 
-    }
+    //}
 }

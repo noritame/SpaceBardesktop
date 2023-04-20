@@ -34,31 +34,15 @@
             />
             </Border>
             <TextBlock
-                Text="Tags"
-                Margin="10,30,10,10"
+                Text="Descrição"
+                Margin="20,50,20,0"
                 />
-            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8">
-                <TextBox
-            x:Name="data_post"
-            
-            FontSize="13"
-            FontWeight="Medium"
-            FontFamily="Segoe UI"
-            Foreground="Silver"
-            Height="26"
-             BorderBrush="White"
-            VerticalContentAlignment="Center"
-            Margin="5,1,5,1" 
-            RenderTransformOrigin="0.61,0.464"
-            Padding="20,0,0,0"
-            />
-            </Border>
+          
 
-            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,30,0,0">
+            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,10,0,10">
                 <TextBox
                x:Name="desc_post"
             FontSize="13"
-            Text="Dê uma descrição á sua postagem"
             TextAlignment="Left"
             FontWeight="Medium"
             FontFamily="Segoe UI"
@@ -66,12 +50,32 @@
             Height="76"
              BorderBrush="White"
             VerticalContentAlignment="Center"
-            Margin="5,0,5,1" 
+            Margin="1,0,5,1" 
             RenderTransformOrigin="0.61,0.464"
-            Padding="2,0,0,30"  
+            Padding="2,0,0,30" 
                 />
             </Border>
 
+
+            <TextBlock
+                Text="Insara a Data de Hoje."
+                Margin="1,1,340,-30"
+                />
+            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,20,350,-50">
+                <TextBox
+                    x:Name="Data_post"
+                     FontSize="13"
+            TextAlignment="Left"
+            FontWeight="Medium"
+            FontFamily="Segoe UI"
+            Foreground="Silver"
+            Height="31"
+             BorderBrush="White"
+            VerticalContentAlignment="Center"
+            RenderTransformOrigin="0.61,0.464"
+/>
+
+            </Border>
             <Button x:Name="btnPostar"
                         BorderThickness="0"
                         Content="Postar"

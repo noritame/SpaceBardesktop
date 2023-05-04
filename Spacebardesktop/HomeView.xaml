@@ -57,25 +57,8 @@
             </Border>
 
 
-            <TextBlock
-                Text="Insara a Data de Hoje."
-                Margin="1,1,340,-30"
-                />
-            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,20,350,-50">
-                <TextBox
-                    x:Name="Data_post"
-                     FontSize="13"
-            TextAlignment="Left"
-            FontWeight="Medium"
-            FontFamily="Segoe UI"
-            Foreground="Silver"
-            Height="31"
-             BorderBrush="White"
-            VerticalContentAlignment="Center"
-            RenderTransformOrigin="0.61,0.464"
-/>
-
-            </Border>
+           
+           
             <Button x:Name="btnPostar"
                         BorderThickness="0"
                         Content="Postar"
@@ -109,6 +92,44 @@
                         </Border>
                     </ControlTemplate>
                 </Button.Template>
+            </Button>
+            
+            <Image Height="100" Width="100" Margin="1,-60,150,1" x:Name="image_post"/>
+            
+
+            <Button x:Name="btnImagen"
+                        BorderThickness="0"
+                        Content="Imagem"
+                        Foreground="White"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="2" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        Margin="-340,-100,15,3" 
+                        Click="btnImagen_Click" Height="59" Width="98"
+                        >
+
+                <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="#DA34AE"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFA92987"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border Width="100" Height="30"
+                                    CornerRadius="20"
+                                    Background="{TemplateBinding Background}">
+                        <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Button.Template>
             </Button>
         </StackPanel>
     </Grid>

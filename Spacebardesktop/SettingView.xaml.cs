@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Spacebardesktop
 {
     /// <summary>
-    /// Lógica interna para SettingsView.xaml
+    /// Interação lógica para SettingView.xam
     /// </summary>
-    public partial class SettingsView : Window
+    public partial class SettingView : UserControl
     {
-        public SettingsView()
+        public SettingView()
         {
             InitializeComponent();
         }

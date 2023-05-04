@@ -51,7 +51,7 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        //public ICommand ShowCustomerViewCommand { get; }
+        public ICommand ShowSettingsViewCommand { get; }
 
         public MainViewModel()
         {
@@ -62,27 +62,28 @@ namespace Spacebardesktop.ViewModels
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            //ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
+            ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
             //Default View
             ExecuteShowHomeViewCommand(null);
-            //ExecuteShowCustomerViewCommand(null);
+            ExecuteShowSettingsViewCommand(null);
             LoadCurrentUserData();
         }
-
-        //private void ExecuteShowCustomerViewCommand(object obj)
-        //{
-        //    CurrentChildView = new CustomViewModel();
-        //    Caption = "Dashboard"; 
-        //    Icon = IconChar.Home;
-        //}
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
             CurrentChildView = new HomeViewModel();
             Caption = "Dashboard";
-            Icon = IconChar.Home; 
+            Icon = IconChar.Home;
         }
+        private void ExecuteShowSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new SettingsViewModel();
+            Caption = "Settings";
+            Icon = IconChar.Gear;
+        }
+
+        
 
         private void LoadCurrentUserData()
         {

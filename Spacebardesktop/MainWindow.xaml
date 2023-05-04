@@ -21,6 +21,10 @@
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <local:HomeView/>
         </DataTemplate>
+
+        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+            <local:SettingView/>
+        </DataTemplate>
     </Window.Resources>
 
 
@@ -61,31 +65,41 @@
                                 Height="85"
                                 Margin="15,25,0,40" RenderTransformOrigin="0.529,0.541">
                         <Image Source="/Imagens/logo_Icon.png" Height="56" Margin="40,0,10,0" />
-                        
+
                     </StackPanel>
                     <!--Botãoes-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Home" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
-                            <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </RadioButton>
-                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}">
+                                 Tag="{StaticResource color1}"
+                                 Command="{Binding ShowHomeViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
-                            <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
+                            <TextBlock Text="+ Post" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
+                    <!--<RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color1}">-->
+                        <!--<StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
+                            <StackPanel.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform/>
+                                    <SkewTransform/>
+                                    <RotateTransform Angle="-7.929"/>
+                                    <TranslateTransform/>
+                                </TransformGroup>
+                            </StackPanel.RenderTransform>
+                            <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
+                            <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>-->
+                    <!--</RadioButton>-->
                     <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color8}">
+                                 Tag="{StaticResource color8}"
+                                 Command="{Binding ShowSettingsViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Tools" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                    
+
                 </StackPanel>
             </Border>
 
@@ -102,7 +116,7 @@
                     <Grid.RowDefinitions>
                         <!--Control Bar-->
                         <RowDefinition Height="25"/>
-                        <RowDefinition Height="35"/> 
+                        <RowDefinition Height="35"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
 
@@ -128,7 +142,7 @@
                                 Click="btnMaximize_Click">
                             <fa:IconImage Icon="Square" Style="{StaticResource controlButtonIcon}"/>
                         </Button>
-                        
+
                         <Button x:Name="btnMinimize"
                                 Style="{StaticResource controlButton}"
                                 Tag="{StaticResource color8}"

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,54 +10,52 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
-
-using Spacebardesktop.Repositories;
-using System.Xaml;
-using System.Xaml.Permissions;
-using Spacebardesktop.ViewModels;
-using System.Threading;
-using System.Net;
+using System.Runtime;
+using System.Runtime.InteropServices;
+using System.Windows.Interop;
 
 namespace Spacebardesktop
 {
     /// <summary>
-    /// Interação lógica para MainWindow.xam
+    /// Lógica interna para LoginView.xaml
     /// </summary>
-    /// 
-
-    public partial class MainWindow : Window
+    public partial class LoginView : Window
     {
-        public MainWindow()
+        public LoginView()
         {
             InitializeComponent();
+           
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SendMessage(IntPtr hwnd, int wMsg, int wParam, int lParam);
+
+        private void pnlControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+            WindowInteropHelper helper = new WindowInteropHelper(this);
+            SendMessage(helper.Handle, 161,2,0);
+        }
+
+        private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
+        {
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
         }
-            
-        private void btnClosed_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
 
-        private void BtnLogin_Click(object sender, RoutedEventArgs e)
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            
-    }
-
-        private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed)
-                DragMove();
+            WindowState = WindowState.Maximized;
         }
     }
-    }
-
+}

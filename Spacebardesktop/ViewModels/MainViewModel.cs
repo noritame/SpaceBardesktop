@@ -9,7 +9,6 @@ using System.Windows.Input;
 using FontAwesome.Sharp;
 using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
-using Spacebardesktop.View;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -52,38 +51,39 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowCustomerViewCommand { get; }
+        public ICommand ShowSettingsViewCommand { get; }
 
         public MainViewModel()
         {
            userRepository = new UserRepository();
            CurrentUserAccount = new UserAccountModel();
-           
+
 
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowCustomerViewCommand = new ViewModelCommand(ExecuteShowCustomerViewCommand);
+            ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
 
             //Default View
             ExecuteShowHomeViewCommand(null);
-            ExecuteShowCustomerViewCommand(null);
+            ExecuteShowSettingsViewCommand(null);
             LoadCurrentUserData();
-        }
-
-        private void ExecuteShowCustomerViewCommand(object obj)
-        {
-            CurrentChildView = new CustomViewModel();
-            Caption = "Customer"; 
-            Icon = IconChar.UserGroup;
         }
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
             CurrentChildView = new HomeViewModel();
             Caption = "Dashboard";
-            Icon = IconChar.Home; 
+            Icon = IconChar.Home;
         }
+        private void ExecuteShowSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new SettingsViewModel();
+            Caption = "Settings";
+            Icon = IconChar.Gear;
+        }
+
+        
 
         private void LoadCurrentUserData()
         {
@@ -97,7 +97,7 @@ namespace Spacebardesktop.ViewModels
             else
             {
                CurrentUserAccount.DisplayName="Usuario Invalido";
-              // Hide child views
+
             }
         }
     }

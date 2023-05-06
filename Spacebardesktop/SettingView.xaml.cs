@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Spacebardesktop.View
+namespace Spacebardesktop
 {
     /// <summary>
-    /// Interação lógica para CustomerView.xam
+    /// Interação lógica para SettingView.xam
     /// </summary>
-    public partial class CustomerView : UserControl
+    public partial class SettingView : UserControl
     {
-        public CustomerView()
+        public SettingView()
         {
             InitializeComponent();
         }

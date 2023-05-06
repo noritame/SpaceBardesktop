@@ -132,7 +132,7 @@ namespace Spacebardesktop.ViewModels
             }
             else// usuario invalido
             {
-                ErrorManage = "* Invalid username or password";
+                ErrorManage = "* Usuario ou senha invalidos";
             }
         }
     }

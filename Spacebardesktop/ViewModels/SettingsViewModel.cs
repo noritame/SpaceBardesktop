@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spacebardesktop.ViewModels
 {
-    public class CustomViewModel : ViewModelBase
+    public class SettingsViewModel : ViewModelBase
     {
     }
 }

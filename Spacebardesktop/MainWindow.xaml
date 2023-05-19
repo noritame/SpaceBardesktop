@@ -18,11 +18,11 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
+        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
             <local:HomeView/>
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
+        <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <local:SettingView/>
         </DataTemplate>
     </Window.Resources>
@@ -72,13 +72,13 @@
                                  Tag="{StaticResource color1}"
                                  Command="{Binding ShowHomeViewCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
+                            <fa:IconImage Icon="Pencil" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="+ Post" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
                     <!--<RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}">-->
-                        <!--<StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
+                                 Tag="{StaticResource color1}">
+                        <StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
                             <StackPanel.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform/>
@@ -89,13 +89,13 @@
                             </StackPanel.RenderTransform>
                             <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>-->
-                    <!--</RadioButton>-->
+                        </StackPanel>
+                    </RadioButton>-->
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowSettingsViewCommand}">
                         <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Tools" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
+                            <fa:IconImage Icon="Edit" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>

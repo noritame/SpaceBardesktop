@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Spacebardesktop"
              xmlns:viewmodel="clr-namespace:Spacebardesktop.ViewModels"
              mc:Ignorable="d" 
-             Background="White" Height="348" Width="617">
+             Height="348" Width="617">
 
     <Grid Margin="10">
 

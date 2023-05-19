@@ -70,20 +70,22 @@ namespace Spacebardesktop.ViewModels
             LoadCurrentUserData();
         }
 
+
         private void ExecuteShowHomeViewCommand(object obj)
         {
             CurrentChildView = new HomeViewModel();
-            Caption = "Dashboard";
-            Icon = IconChar.Home;
-        }
-        private void ExecuteShowSettingsViewCommand(object obj)
-        {
-            CurrentChildView = new SettingsViewModel();
             Caption = "Settings";
             Icon = IconChar.Gear;
         }
 
-        
+        private void ExecuteShowSettingsViewCommand(object obj)
+        {
+            CurrentChildView = new SettingsViewModel();
+            Caption = "Dashboard";
+            Icon = IconChar.Home;
+        }
+
+
 
         private void LoadCurrentUserData()
         {

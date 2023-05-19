@@ -7,6 +7,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Spacebardesktop.Repositories
 {
@@ -21,17 +23,24 @@ namespace Spacebardesktop.Repositories
         {
             bool ValidUser;
             using (var connection = GetConnection())
-                using(var command=new SqlCommand())
+            using (var command = new SqlCommand())
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "select *from [tblUsuario] where login_usuario=@login_usuario and [senha_usuario]=@senha_usuario";
-                command.Parameters.Add("@login_usuario", SqlDbType.NVarChar).Value = credential.UserName;
-                command.Parameters.Add("@senha_usuario", SqlDbType.NVarChar).Value = credential.Password;
-                ValidUser = command.ExecuteScalar() == null ? false : true;
+                Repositorio C = new Repositorio();
+                var parametro = new List<SqlParameter>();
+                parametro.Add(new SqlParameter("@loguser", credential.UserName));
+                parametro.Add(new SqlParameter("@senhauser", credential.Password));
+                ValidUser = C.sqlProcedure("spacelogin", parametro) == null ? false : true;
+                //DataSet data = new DataSet();
+                // SqlCommand cmd = new SqlCommand("space_login", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                // cmd.Parameters.Add("@loguser", SqlDbType.NVarChar).Value = credential.UserName;
+                // cmd.Parameters.Add("@senhauser", SqlDbType.NVarChar).Value = credential.Password;
+                //SqlDataReader reader = cmd.ExecuteReader();
             }
 
-                return ValidUser;
+            return ValidUser;
         }       
 
         public void Edit(UserModel userModel)
@@ -52,8 +61,9 @@ namespace Spacebardesktop.Repositories
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "select *from [tblUsuario] where login_usuario=@login_usuario";
-                command.Parameters.Add("@login_usuario", SqlDbType.NVarChar).Value = username;
+                command.CommandText = "select * from tblUsuario where login_usuario=@username";               
+                command.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
+                
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -62,7 +72,7 @@ namespace Spacebardesktop.Repositories
                         {
                             Username = reader[1].ToString(),
                             Password = string.Empty
-
+                                
                         };
                     }
                 }
@@ -70,6 +80,7 @@ namespace Spacebardesktop.Repositories
             }
 
             return user;
+            
         }
 
              public void Remove(int id)

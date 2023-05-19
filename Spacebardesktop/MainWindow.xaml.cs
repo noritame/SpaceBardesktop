@@ -55,7 +55,7 @@ namespace Spacebardesktop
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Maximized;
+            this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
         }
     }
 }

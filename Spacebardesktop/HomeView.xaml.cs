@@ -26,27 +26,21 @@ namespace Spacebardesktop
         private void btnPostar_Click(object sender, RoutedEventArgs e)
         {
             SalvarImg();
-            SqlConnection con = new SqlConnection("Server=(local); Database=SpaceBar; Integrated Security=true");
-            DataSet dt = new DataSet();
-            con.Open();
-            SqlCommand r = new SqlCommand();
-            r.Connection = con;
-            //variaeis locias
-            r.CommandText = "insert into tblPost (titulo_Post, descricao_post) values  (@titulo, @descricao)";
+            String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
             String titulo = titulo_post.Text.ToString();
-            //int data = Convert.ToInt32(Data_post.Text);
-            String descricao = desc_post.Text.ToString();
-            //r.Parameters.Add("@tipo_usu", SqlDbType.Int).Value = 1;
-            r.Parameters.Add("@titulo", SqlDbType.VarChar).Value = titulo;
-            //r.Parameters.Add("@data", SqlDbType.Int).Value = data;
-            r.Parameters.Add("@descricao", SqlDbType.VarChar).Value = descricao;
-            // 1 = usuário comum
-            // 2 = criador de conteúdo
-            // 3 = verificado
-            // 4 = adm
-            r.ExecuteNonQuery();
+            String texto = desc_post.Text.ToString();
+            
+            using (SqlConnection con = new SqlConnection(conexaoString))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("insert into tblPost (titulo_Post, texto_post) values  (@titulo, @texto)", con))
+                {
+                    cmd.Parameters.Add("@titulo", SqlDbType.VarChar).Value = titulo;
+                    cmd.Parameters.Add("@texto", SqlDbType.VarChar).Value = texto;
+                    cmd.ExecuteNonQuery();
+                }
+            }
             System.Windows.MessageBox.Show("Post inserido com sucesso.");
-            con.Close();
             return;
             
         }

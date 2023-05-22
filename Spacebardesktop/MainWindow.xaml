@@ -18,12 +18,8 @@
     </Window.DataContext>
 
     <Window.Resources>
-        <DataTemplate DataType="{x:Type viewModel:SettingsViewModel}">
-            <local:HomeView/>
-        </DataTemplate>
-
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
-            <local:SettingView/>
+            <local:HomeView/>
         </DataTemplate>
     </Window.Resources>
 
@@ -91,14 +87,14 @@
                             <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>-->
-                    <RadioButton Style="{StaticResource menuButton}"
+                    <!--<RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowSettingsViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Edit" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </RadioButton>
+                    </RadioButton>-->
 
                 </StackPanel>
             </Border>

@@ -48,7 +48,7 @@ namespace Spacebardesktop.ViewModels
         {
             byte[] foto = GetFoto(home.CaminhoFoto);
 
-            var sql = "INSERT INTO tblImg_post VALUES (@caminho_img) ";
+            var sql = "INSERT INTO tblPost (img_post) VALUES (@caminho_img) ";
 
             using (var con = new SqlConnection("Server=(local); Database=SpaceBar; Integrated Security=true"))
             {

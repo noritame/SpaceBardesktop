@@ -102,23 +102,15 @@
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Repositories\Repositorio.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="SettingView.xaml.cs">
-      <DependentUpon>SettingView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\HomeViewModel.cs" />
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelCommand.cs" />
     <Compile Include="LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="SettingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

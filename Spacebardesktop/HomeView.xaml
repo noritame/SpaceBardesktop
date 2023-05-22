@@ -17,7 +17,8 @@
 
             <TextBlock 
                 Text="Titulo"
-                Margin="10,0,0,0"/>
+                Margin="10,0,0,0"
+                Foreground="White"/>
             <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8">
              
                 <TextBox
@@ -36,6 +37,7 @@
             <TextBlock
                 Text="Descrição"
                 Margin="20,50,20,0"
+                Foreground="White"
                 />
           
 
@@ -46,7 +48,6 @@
             TextAlignment="Left"
             FontWeight="Medium"
             FontFamily="Segoe UI"
-            Foreground="Silver"
             Height="76"
              BorderBrush="White"
             VerticalContentAlignment="Center"
@@ -93,9 +94,6 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
-            
-            <Image Height="100" Width="100" Margin="1,-60,150,1" x:Name="image_post"/>
-            
 
             <Button x:Name="btnImagen"
                         BorderThickness="0"
@@ -106,7 +104,7 @@
                         Cursor="Hand"
                         Grid.Column="2" 
                         RenderTransformOrigin="0.5,0.5" 
-                        Margin="-340,-100,15,3" 
+                        Margin="-340,-45,15,3" 
                         Click="btnImagen_Click" Height="59" Width="98"
                         >
 

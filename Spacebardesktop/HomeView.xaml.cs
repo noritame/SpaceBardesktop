@@ -35,8 +35,8 @@ namespace Spacebardesktop
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("insert into tblPost (titulo_Post, texto_post) values  (@titulo, @texto)", con))
                 {
-                    cmd.Parameters.Add("@titulo", SqlDbType.VarChar).Value = titulo;
-                    cmd.Parameters.Add("@texto", SqlDbType.VarChar).Value = texto;
+                    cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
+                    cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
                     cmd.ExecuteNonQuery();
                 }
             }

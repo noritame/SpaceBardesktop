@@ -1,4 +1,5 @@
 ﻿using Spacebardesktop.Models;
+using Spacebardesktop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,6 +15,25 @@ namespace Spacebardesktop.Repositories
 {
     public class UserRepository : Repositorio, IUserRepository
     {
+        private string _errorManage;
+        public string ErrorManage
+        {
+
+            get
+            {
+
+                return _errorManage;
+
+            }
+
+            set
+            {
+
+                _errorManage = value;
+
+            }
+        }
+
         public void Add(UserModel userModel)
         {
             throw new NotImplementedException();
@@ -23,27 +43,28 @@ namespace Spacebardesktop.Repositories
         {
             bool ValidUser;
             using (var connection = GetConnection())
-            using (var command = new SqlCommand())
+            using (var cmd = new SqlCommand("spacelogin", connection))
             {
                 connection.Open();
-                command.Connection = connection;
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Connection = connection;
                 Repositorio C = new Repositorio();
-                var parametro = new List<SqlParameter>();
-                parametro.Add(new SqlParameter("@loguser", credential.UserName));
-                parametro.Add(new SqlParameter("@senhauser", credential.Password));
-                ValidUser = C.sqlProcedure("spacelogin", parametro) == null ? false : true;
-                //DataSet data = new DataSet();
-                // SqlCommand cmd = new SqlCommand("space_login", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                // cmd.Parameters.Add("@loguser", SqlDbType.NVarChar).Value = credential.UserName;
-                // cmd.Parameters.Add("@senhauser", SqlDbType.NVarChar).Value = credential.Password;
-                //SqlDataReader reader = cmd.ExecuteReader();
+                var parametro = new List<SqlParameter>
+                {
+                    new SqlParameter("@loguser", credential.UserName),
+                    new SqlParameter("@senhauser", credential.Password)
+                };
+                cmd.Parameters.AddRange(parametro.ToArray());
+
+                // Executar a consulta e verificar se há um resultado válido
+                using (var reader = cmd.ExecuteReader())
+                {
+                    ValidUser = reader.HasRows;
+                }
             }
-
             return ValidUser;
-        }       
-
-        public void Edit(UserModel userModel)
+        }
+            public void Edit(UserModel userModel)
         {
             throw new NotImplementedException();
         }
@@ -61,16 +82,15 @@ namespace Spacebardesktop.Repositories
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText = "select * from tblUsuario where login_usuario=@username";               
-                command.Parameters.Add("@username", SqlDbType.NVarChar).Value = username;
-                
+                command.CommandText=("Select * from tblUsuario where login_usuario=@loguser");
+                command.Parameters.Add("@loguser", SqlDbType.VarChar).Value = username;
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
                     {
                         user = new UserModel()
                         {
-                            Username = reader[1].ToString(),
+                            Username = reader[2].ToString(),
                             Password = string.Empty
                                 
                         };
@@ -78,7 +98,6 @@ namespace Spacebardesktop.Repositories
                 }
             
             }
-
             return user;
             
         }

@@ -21,7 +21,7 @@ namespace Spacebardesktop.Repositories
         {
             return new SqlConnection(connectionString);
         }
-        public DataSet sqlProcedure(string procedurename, List<SqlParameter> parameters = null)
+        public DataSet SqlProcedure(string procedurename, List<SqlParameter> parameters = null)
         {
             var dataSet = new DataSet();
 

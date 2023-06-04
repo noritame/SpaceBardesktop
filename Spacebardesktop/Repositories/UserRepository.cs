@@ -106,5 +106,35 @@ namespace Spacebardesktop.Repositories
         {
             throw new NotImplementedException();
         }
+
+        public UserModel GetById(int id)
+        {
+            string query = "SELECT cod_usuario FROM tblUsuario WHERE nome_usuario = @nomeUsuario";
+            UserModel user = null;
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@nomeUsuario", value:user);
+
+                    // Execute a consulta e obtenha o ID do usuário
+                    int? userId = command.ExecuteScalar() as int?;
+
+                    // Verifique se o ID do usuário foi encontrado
+                    if (userId.HasValue)
+                    {
+                        // Faça algo com o ID do usuário, como armazená-lo em uma variável ou propriedade
+                        int idUsuario = userId.Value;
+                        // ...
+                    }
+                    else
+                    {
+                        // O usuário não foi encontrado
+                    }
+                }
+            }
+            return user;
+        }
     }
 }

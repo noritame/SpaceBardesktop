@@ -72,29 +72,15 @@
                             <TextBlock Text="+ Post" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                    <!--<RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color1}">
-                        <StackPanel Orientation="Horizontal" RenderTransformOrigin="0.5,0.5">
-                            <StackPanel.RenderTransform>
-                                <TransformGroup>
-                                    <ScaleTransform/>
-                                    <SkewTransform/>
-                                    <RotateTransform Angle="-7.929"/>
-                                    <TranslateTransform/>
-                                </TransformGroup>
-                            </StackPanel.RenderTransform>
-                            <fa:IconImage Icon="Pen" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
-                            <TextBlock Text="Home" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </RadioButton>-->
-                    <!--<RadioButton Style="{StaticResource menuButton}"
+                   
+                    <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowSettingsViewCommand}">
                         <StackPanel Orientation="Horizontal">
                             <fa:IconImage Icon="Edit" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
                             <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
-                    </RadioButton>-->
+                    </RadioButton>
 
                 </StackPanel>
             </Border>

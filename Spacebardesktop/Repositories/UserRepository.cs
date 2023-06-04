@@ -14,7 +14,7 @@ using System.Windows.Controls;
 namespace Spacebardesktop.Repositories
 {
     public class UserRepository : Repositorio, IUserRepository
-    {
+    { 
         private string _errorManage;
         public string ErrorManage
         {
@@ -39,32 +39,38 @@ namespace Spacebardesktop.Repositories
             throw new NotImplementedException();
         }
 
-        public bool AuthenticateUser(NetworkCredential credential)//verificação de usuario
+        public bool AuthenticateUser(NetworkCredential credential)
         {
-            bool ValidUser;
+            int userId;
+            bool validUser = false;
+
             using (var connection = GetConnection())
             using (var cmd = new SqlCommand("spacelogin", connection))
             {
                 connection.Open();
                 cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Connection = connection;
-                Repositorio C = new Repositorio();
                 var parametro = new List<SqlParameter>
-                {
-                    new SqlParameter("@loguser", credential.UserName),
-                    new SqlParameter("@senhauser", credential.Password)
-                };
+        {
+            new SqlParameter("@loguser", credential.UserName),
+            new SqlParameter("@senhauser", credential.Password)
+        };
                 cmd.Parameters.AddRange(parametro.ToArray());
 
                 // Executar a consulta e verificar se há um resultado válido
                 using (var reader = cmd.ExecuteReader())
                 {
-                    ValidUser = reader.HasRows;
+                    if (reader.Read())
+                    {
+                        userId = Convert.ToInt32(reader["cod_usuario"]);
+                        validUser = true;
+                    }
                 }
             }
-            return ValidUser;
+
+            return validUser;
         }
-            public void Edit(UserModel userModel)
+
+        public void Edit(UserModel userModel)
         {
             throw new NotImplementedException();
         }
@@ -76,13 +82,13 @@ namespace Spacebardesktop.Repositories
 
         public UserModel GetByUsername(string username)
         {
-            UserModel user=null;
+            UserModel user = null;
             using (var connection = GetConnection())
             using (var command = new SqlCommand())
             {
                 connection.Open();
                 command.Connection = connection;
-                command.CommandText=("Select * from tblUsuario where login_usuario=@loguser");
+                command.CommandText = ("Select * from tblUsuario where login_usuario=@loguser");
                 command.Parameters.Add("@loguser", SqlDbType.VarChar).Value = username;
                 using (var reader = command.ExecuteReader())
                 {
@@ -92,49 +98,24 @@ namespace Spacebardesktop.Repositories
                         {
                             Username = reader["login_usuario"].ToString(),
                             Password = string.Empty
-                            
+
                         };
-                        
+
                     }
                 }
             }
             return user;
-            
-        }
 
-             public void Remove(int id)
+        }
+       
+
+        public void Remove(int id)
         {
             throw new NotImplementedException();
-        }
+          }
 
-        public UserModel GetById(int id)
-        {
-            string query = "SELECT cod_usuario FROM tblUsuario WHERE nome_usuario = @nomeUsuario";
-            UserModel user = null;
-            using (var connection = GetConnection())
-            {
-                connection.Open();
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@nomeUsuario", value:user);
-
-                    // Execute a consulta e obtenha o ID do usuário
-                    int? userId = command.ExecuteScalar() as int?;
-
-                    // Verifique se o ID do usuário foi encontrado
-                    if (userId.HasValue)
-                    {
-                        // Faça algo com o ID do usuário, como armazená-lo em uma variável ou propriedade
-                        int idUsuario = userId.Value;
-                        // ...
-                    }
-                    else
-                    {
-                        // O usuário não foi encontrado
-                    }
-                }
-            }
-            return user;
         }
     }
-}
+
+
+

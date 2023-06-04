@@ -9,8 +9,11 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using Microsoft.Win32;
-using Spacebardesktop.Repositories;
 using System.Data;
+using System.Threading;
+using Spacebardesktop.Models;
+using System.Net;
+using Spacebardesktop.Repositories;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -51,32 +54,38 @@ namespace Spacebardesktop.ViewModels
 
         public ICommand CriarPost { get; }
 
+
         public void Salvar(HomeViewModel homeView)
         {
             byte[] foto = GetFoto(homeView.CaminhoFoto);
+            UserRepository userRepository = new UserRepository();
+            
+                String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
+                var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post) values  (@titulo, @texto, @data, @imagem)";
+                String titulo = _title.ToString();
+                String texto = _description.ToString();
+                DateTime? dataAtual = DateTime.Now;
 
-            String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-            var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post) values  (@titulo, @texto, @data, @imagem)";
-            String titulo = _title.ToString();
-            String texto = _description.ToString();
-            DateTime? dataAtual = DateTime.Now;
-            using (var con = new SqlConnection(conexaoString))
-            {
-                con.Open();
-                using (var cmd = new SqlCommand(sql, con))
+                using (var con = new SqlConnection(conexaoString))
                 {
-                    cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
-                    cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
-                    if(dataAtual.HasValue)
-                        cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
-                    else
-                        cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
+                    con.Open();
+                    using (var cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
+                        cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
+                        if (dataAtual.HasValue)
+                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
+                        else
+                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
 
-                    cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
-                    cmd.ExecuteNonQuery();
+                        cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
+                        cmd.ExecuteNonQuery();
+                    }
                 }
-            }
+            
         }
+        
+
 
         private byte[] GetFoto(string caminhoFoto)
         {
@@ -89,6 +98,35 @@ namespace Spacebardesktop.ViewModels
                 }
             }
             return foto;
+        }
+        public UserModel GetById(string nomeUsuario)
+        {
+            string query = "SELECT cod_usuario FROM tblUsuario WHERE login_usuario = @nomeUsuario";
+            string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
+
+            UserModel user = null;
+
+            using (var connection = new SqlConnection(conexaoString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@nomeUsuario", nomeUsuario);
+
+                    // Execute a consulta e obtenha o ID do usuário
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
+                    {
+                        int userId = Convert.ToInt32(result);
+                        user = new UserModel()
+                        {
+                            Id = userId.ToString(),
+                        };
+                    }
+                }
+            }
+
+            return user;
         }
     }
 }

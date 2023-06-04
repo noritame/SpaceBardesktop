@@ -16,17 +16,17 @@ namespace Spacebardesktop
     {
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
-            //var mainWindow = new MainWindow();
-            //mainWindow.Show();
-            //mainWindow.IsVisibleChanged += (s, ev) =>
-            //{
-            //    if (mainWindow.IsVisible == false && mainWindow.IsLoaded)
-            //    {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            mainWindow.IsVisibleChanged += (s, ev) =>
+            {
+                if (mainWindow.IsVisible == false && mainWindow.IsLoaded)
+                {
                     var loginView = new LoginView();
                     loginView.Show();
-            //        mainWindow.Close();
-            //    }
-            //};
+                    mainWindow.Close();
+                }
+            };
         }
     }
 }

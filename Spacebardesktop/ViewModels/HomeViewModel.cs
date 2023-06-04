@@ -6,8 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Input;
+using Microsoft.Win32;
 using Spacebardesktop.Repositories;
+using System.Data;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -15,8 +18,11 @@ namespace Spacebardesktop.ViewModels
     {
         private string _title;
         private string _description;
-        public byte[] foto { get; set; }
         public string CaminhoFoto { get; set; }
+       
+        public byte[] Foto { get; set; }
+
+
         public string Title
         {
             get
@@ -28,9 +34,9 @@ namespace Spacebardesktop.ViewModels
                 _title = value;
                 OnPropertyChanged(nameof(Title));
 
-                }
             }
-            public string Description
+        }
+        public string Description
         {
             get
             {
@@ -43,27 +49,39 @@ namespace Spacebardesktop.ViewModels
             }
         }
 
-        public ICommand CriarPost {get; }
-        public void Salvar(HomeViewModel home)
+        public ICommand CriarPost { get; }
+
+        public void Salvar(HomeViewModel homeView)
         {
-            byte[] foto = GetFoto(home.CaminhoFoto);
+            byte[] foto = GetFoto(homeView.CaminhoFoto);
 
-            var sql = "INSERT INTO tblPost (img_post) VALUES (@caminho_img) ";
-
-            using (var con = new SqlConnection("Server=(local); Database=SpaceBar; Integrated Security=true"))
+            String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
+            var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post) values  (@titulo, @texto, @data, @imagem)";
+            String titulo = _title.ToString();
+            String texto = _description.ToString();
+            DateTime? dataAtual = DateTime.Now;
+            using (var con = new SqlConnection(conexaoString))
             {
                 con.Open();
-                using(var cmd = new SqlCommand(sql, con))
+                using (var cmd = new SqlCommand(sql, con))
                 {
-                    cmd.Parameters.Add("@caminho_img", System.Data.SqlDbType.Image, foto.Length).Value = foto;
+                    cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
+                    cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
+                    if(dataAtual.HasValue)
+                        cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
+                    else
+                        cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
+
+                    cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
                     cmd.ExecuteNonQuery();
                 }
             }
         }
-        public byte[] GetFoto(string caminho)
+
+        private byte[] GetFoto(string caminhoFoto)
         {
             byte[] foto;
-            using (var stream = new FileStream(caminho, FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream(caminhoFoto, FileMode.Open, FileAccess.Read))
             {
                 using (var reader = new BinaryReader(stream))
                 {
@@ -72,7 +90,5 @@ namespace Spacebardesktop.ViewModels
             }
             return foto;
         }
-
     }
-    
 }

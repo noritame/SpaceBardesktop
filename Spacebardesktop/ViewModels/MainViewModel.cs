@@ -74,18 +74,9 @@ namespace Spacebardesktop.ViewModels
         private void ExecuteShowHomeViewCommand(object obj)
         {
             CurrentChildView = new HomeViewModel();
-            Caption = "Settings";
-            Icon = IconChar.Gear;
+            Caption = "Criar Post";
+            Icon = IconChar.Pen;
         }
-
-        //private void ExecuteShowSettingsViewCommand(object obj)
-        //{
-        //    CurrentChildView = new SettingsViewModel();
-        //    Caption = "Dashboard";
-        //    Icon = IconChar.Home;
-        //}
-
-
 
         private void LoadCurrentUserData()
         {
@@ -93,7 +84,7 @@ namespace Spacebardesktop.ViewModels
             if (user != null)
             {
                 CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"{user.Name}";
+                CurrentUserAccount.DisplayName = $"{user.Username}";
                 CurrentUserAccount.ProfilePicture = null;
             }
             else

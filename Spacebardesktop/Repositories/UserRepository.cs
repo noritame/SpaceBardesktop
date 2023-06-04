@@ -39,7 +39,7 @@ namespace Spacebardesktop.Repositories
             throw new NotImplementedException();
         }
 
-        public bool AuthenticateUser(NetworkCredential credential)
+        public bool AuthenticateUser(NetworkCredential credential)//verificação de usuario
         {
             bool ValidUser;
             using (var connection = GetConnection())
@@ -90,13 +90,13 @@ namespace Spacebardesktop.Repositories
                     {
                         user = new UserModel()
                         {
-                            Username = reader[2].ToString(),
+                            Username = reader["login_usuario"].ToString(),
                             Password = string.Empty
-                                
+                            
                         };
+                        
                     }
                 }
-            
             }
             return user;
             

@@ -6,60 +6,59 @@
              xmlns:local="clr-namespace:Spacebardesktop"
              xmlns:viewmodel="clr-namespace:Spacebardesktop.ViewModels"
              mc:Ignorable="d" 
-             Height="348" Width="617">
+             Height="490" Width="617">
 
-    <Grid Margin="10">
+    <Grid Margin="10,10,10,-70">
 
-        
+
         <StackPanel
             Orientation="Vertical"
-             Margin="79,30,58,1">
+             Margin="10,10,10,0">
 
             <TextBlock 
                 Text="Titulo"
-                Margin="10,0,0,0"
+                Margin="20,20,10,10"
                 Foreground="White"/>
-            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8">
-             
+            <Border Background="White" BorderBrush="#D9D9D9" BorderThickness="1" CornerRadius="8,8,8,8">
+
                 <TextBox
-            x:Name="titulo_post"
-            FontSize="13"
-            FontWeight="Medium"
-            FontFamily="Segoe UI"
-            Height="26"
-             BorderBrush="White"
-            VerticalContentAlignment="Center"
-            Margin="5,1,5,1" 
-            RenderTransformOrigin="0.61,0.464"
-            Padding="20,0,0,0"
+                x:Name="titulo_post"
+                FontSize="16"
+                FontWeight="Medium"
+                FontFamily="Segoe UI"
+                Height="61"
+                BorderBrush="#D9D9D9"
+                VerticalContentAlignment="Top" 
+                RenderTransformOrigin="0.61,0.464"
+                Padding="10,10,10,10" TextChanged="titulo_post_TextChanged" Background="#FFE4E4E4" IsEnabled="True"
             />
             </Border>
             <TextBlock
                 Text="Descrição"
-                Margin="20,50,20,0"
-                Foreground="White"
-                />
-          
+                Margin="10,40,20,0"
+                Foreground="#F2F2F2"
+            />
 
-            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="8,8,8,8" Margin="0,10,0,10">
+
+            <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="12,12,12,12" Margin="0,10,0,10">
                 <TextBox
-               x:Name="desc_post"
-            FontSize="13"
-            TextAlignment="Left"
-            FontWeight="Medium"
-            FontFamily="Segoe UI"
-            Height="76"
-             BorderBrush="White"
-            VerticalContentAlignment="Center"
-            Margin="1,0,5,1" 
-            RenderTransformOrigin="0.61,0.464"
-            Padding="2,0,0,30" 
+                    x:Name="desc_post"
+                    FontSize="16"
+                    TextAlignment="Left"
+                    FontWeight="Medium"
+                    FontFamily="Segoe UI"
+                    Height="300"
+                    BorderBrush="#D9D9D9"
+                    VerticalContentAlignment="Top"
+                    Margin="1,0,5,1" 
+                    RenderTransformOrigin="0.61,0.464"
+                    Padding="2,0,0,30" Background="#FFE4E4E4" Text="testeteste" 
                 />
             </Border>
 
 
-           
-           
+
+
             <Button x:Name="btnPostar"
                         BorderThickness="0"
                         Content="Postar"
@@ -69,24 +68,24 @@
                         Cursor="Hand"
                         Grid.Column="2" 
                         RenderTransformOrigin="0.5,0.5" 
-                        Margin="300,20,5,3" 
-                        Click="btnPostar_Click"
+                        Margin="460,20,5,3" 
+                        Click="btnPostar_Click" Width="103"
                         >
 
                 <Button.Style>
                     <Style TargetType="Button">
-                        <Setter Property="Background" Value="#DA34AE"/>
+                        <Setter Property="Background" Value="#B455FF"/>
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#FFA92987"/>
+                                <Setter Property="Background" Value="#782EFF"/>
                             </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
-                        <Border Width="100" Height="30"
-                                    CornerRadius="20"
+                        <Border Width="100" Height="32"
+                                    CornerRadius="15"
                                     Background="{TemplateBinding Background}">
                             <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"/>
@@ -104,30 +103,30 @@
                         Cursor="Hand"
                         Grid.Column="2" 
                         RenderTransformOrigin="0.5,0.5" 
-                        Margin="-340,-45,15,3" 
-                        Click="btnImagen_Click" Height="59" Width="98"
+                        Margin="-440,-50,15,3" 
+                        Click="btnImagen_Click" Height="59" Width="102"
                         >
 
                 <Button.Style>
-                <Style TargetType="Button">
-                    <Setter Property="Background" Value="#DA34AE"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFA92987"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-            <Button.Template>
-                <ControlTemplate TargetType="Button">
-                    <Border Width="100" Height="30"
-                                    CornerRadius="20"
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#B455FF"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#782EFF"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="100" Height="30"
+                                    CornerRadius="15"
                                     Background="{TemplateBinding Background}">
-                        <ContentPresenter VerticalAlignment="Center"
+                            <ContentPresenter VerticalAlignment="Center"
                                                   HorizontalAlignment="Center"/>
-                    </Border>
-                </ControlTemplate>
-            </Button.Template>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
             </Button>
         </StackPanel>
     </Grid>

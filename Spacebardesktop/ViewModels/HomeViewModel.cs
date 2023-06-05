@@ -99,7 +99,8 @@ namespace Spacebardesktop.ViewModels
             }
             return foto;
         }
-        public UserModel GetById(string nomeUsuario)
+
+        public static UserModel GetById(string nomeUsuario)
         {
             string query = "SELECT cod_usuario FROM tblUsuario WHERE login_usuario = @nomeUsuario";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
@@ -118,14 +119,12 @@ namespace Spacebardesktop.ViewModels
                     if (result != null && result != DBNull.Value)
                     {
                         int userId = Convert.ToInt32(result);
-                        user = new UserModel()
-                        {
+                        user = new UserModel() {
                             Id = userId.ToString(),
                         };
                     }
                 }
             }
-
             return user;
         }
     }

@@ -66,7 +66,6 @@ namespace Spacebardesktop.Repositories
                     }
                 }
             }
-
             return validUser;
         }
 
@@ -100,14 +99,11 @@ namespace Spacebardesktop.Repositories
                             Password = string.Empty
 
                         };
-
                     }
                 }
             }
             return user;
-
         }
-       
 
         public void Remove(int id)
         {
@@ -116,6 +112,3 @@ namespace Spacebardesktop.Repositories
 
         }
     }
-
-
-

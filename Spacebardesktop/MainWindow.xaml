@@ -8,7 +8,7 @@
         xmlns:Repositories="clr-namespace:Spacebardesktop.Repositories"
         xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
         mc:Ignorable="d"
-        Title="LoginView" Height="450" Width="800"
+        Title="LoginView" Height="710" Width="885"
         WindowStyle="None"
         Background="Transparent"
         AllowsTransparency="True">
@@ -35,8 +35,8 @@
         </Border.BorderBrush>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="139*"/>
-                <RowDefinition Height="85*"/>
+                <RowDefinition Height="93*"/>
+                <RowDefinition Height="143*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <!--Menu-->
@@ -72,7 +72,7 @@
                             <TextBlock Text="+ Post" Style="{StaticResource menuButtonText}"/>
                         </StackPanel>
                     </RadioButton>
-                   
+
                     <RadioButton Style="{StaticResource menuButton}"
                                  Tag="{StaticResource color8}"
                                  Command="{Binding ShowSettingsViewCommand}">
@@ -87,7 +87,7 @@
 
             <!--Seção de conteudo-->
             <Border CornerRadius="0,10,10,0"
-                    Grid.Column="1" Grid.RowSpan="2">
+                    Grid.Column="1" Grid.RowSpan="2" Margin="0,0,-85,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
                         <GradientStop Color="#2B2B2B" Offset="0"/>

@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Spacebardesktop.Repositories;
 using Spacebardesktop.ViewModels;
 
 namespace Spacebardesktop
@@ -30,6 +31,8 @@ namespace Spacebardesktop
         {
             string nomeUsuario = txtUser.Text;
             HomeViewModel.GetById(nomeUsuario);
+            string nomeUsusarioType = txtUser.Text;
+            UserRepository.GetByType(nomeUsusarioType);
         }
 
         private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)

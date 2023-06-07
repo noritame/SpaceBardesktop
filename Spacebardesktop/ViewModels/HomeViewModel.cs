@@ -14,6 +14,7 @@ using System.Threading;
 using Spacebardesktop.Models;
 using System.Net;
 using Spacebardesktop.Repositories;
+using System.Security.Principal;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -58,15 +59,13 @@ namespace Spacebardesktop.ViewModels
         public void Salvar(HomeViewModel homeView)
         {
             byte[] foto = GetFoto(homeView.CaminhoFoto);
-            UserRepository userRepository = new UserRepository();
-            
-                String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-                var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post) values  (@titulo, @texto, @data, @imagem)";
+            String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
+                var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post, cod_usuario) values  (@titulo, @texto, @data, @imagem,@id)";
                 String titulo = _title.ToString();
                 String texto = _description.ToString();
                 DateTime? dataAtual = DateTime.Now;
-
-                using (var con = new SqlConnection(conexaoString))
+            UserModel user = GetById(Thread.CurrentPrincipal.Identity.Name);
+            using (var con = new SqlConnection(conexaoString))
                 {
                     con.Open();
                     using (var cmd = new SqlCommand(sql, con))
@@ -77,9 +76,9 @@ namespace Spacebardesktop.ViewModels
                             cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
                         else
                             cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
-
                         cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
-                        cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.ExecuteNonQuery();
                     }
                 }
             

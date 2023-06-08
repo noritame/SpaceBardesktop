@@ -15,6 +15,7 @@ namespace Spacebardesktop
         public MainWindow()
         {
             InitializeComponent();
+            
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using Spacebardesktop.Repositories;
+using Spacebardesktop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,17 +123,26 @@ namespace Spacebardesktop.ViewModels
 
         private void ExecuteLoginCommand(object obj)
         {
-            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username,Password));
-            if (isValidUser)// usuario valido
-               
+            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
+
+            if (isValidUser)
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username),null );
-                IsViewVisible = false;
+                var user = userRepository.GetByUsername(Username);
+                if (user != null && UserRepository.IsInvalidUserType(user.Type))
+                {
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
+                    IsViewVisible = false;
+                }
+                else
+                {
+                    ErrorManage = "* Tipo de usuário não permitido";
+                }
             }
-            else// usuario invalido
+            else
             {
-                ErrorManage = "* Usuario ou senha invalidos";
+                ErrorManage = "* Usuário ou senha inválidos";
             }
         }
+
     }
 }

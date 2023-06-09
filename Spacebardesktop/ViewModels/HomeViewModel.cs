@@ -14,6 +14,7 @@ using System.Threading;
 using Spacebardesktop.Models;
 using System.Net;
 using Spacebardesktop.Repositories;
+using System.Security.Principal;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -58,31 +59,25 @@ namespace Spacebardesktop.ViewModels
         public void Salvar(HomeViewModel homeView)
         {
             byte[] foto = GetFoto(homeView.CaminhoFoto);
-            UserRepository userRepository = new UserRepository();
-            
-                String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-                var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post) values  (@titulo, @texto, @data, @imagem)";
+            String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
                 String titulo = _title.ToString();
                 String texto = _description.ToString();
                 DateTime? dataAtual = DateTime.Now;
-
-                using (var con = new SqlConnection(conexaoString))
+            UserModel user = GetById(Thread.CurrentPrincipal.Identity.Name);
+            using (var con = new SqlConnection(conexaoString))
                 {
                     con.Open();
-                    using (var cmd = new SqlCommand(sql, con))
+                    using (var cmd = new SqlCommand("InsertPost", con))
                     {
-                        cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
-                        cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
-                        if (dataAtual.HasValue)
-                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
-                        else
-                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
-
-                        cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
-                        cmd.ExecuteNonQuery();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@titulo", titulo);
+                    cmd.Parameters.AddWithValue("@texto", texto);
+                    cmd.Parameters.AddWithValue("@data", dataAtual);
+                    cmd.Parameters.AddWithValue("@imagem", foto);
+                    cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.ExecuteNonQuery();
                     }
                 }
-            
         }
         
 
@@ -99,11 +94,12 @@ namespace Spacebardesktop.ViewModels
             }
             return foto;
         }
-        public UserModel GetById(string nomeUsuario)
+
+        public static UserModel GetById(string nomeUsuario)
         {
             string query = "SELECT cod_usuario FROM tblUsuario WHERE login_usuario = @nomeUsuario";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-
+      
             UserModel user = null;
 
             using (var connection = new SqlConnection(conexaoString))
@@ -118,14 +114,12 @@ namespace Spacebardesktop.ViewModels
                     if (result != null && result != DBNull.Value)
                     {
                         int userId = Convert.ToInt32(result);
-                        user = new UserModel()
-                        {
+                        user = new UserModel() {
                             Id = userId.ToString(),
                         };
                     }
                 }
             }
-
             return user;
         }
     }

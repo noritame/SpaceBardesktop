@@ -25,7 +25,8 @@ namespace Spacebardesktop
         public LoginView()
         {
             InitializeComponent();
-           
+            this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+
         }
 
         [DllImport("user32.dll")]
@@ -35,7 +36,7 @@ namespace Spacebardesktop
         {
 
             WindowInteropHelper helper = new WindowInteropHelper(this);
-            SendMessage(helper.Handle, 161,2,0);
+            SendMessage(helper.Handle, 161, 2, 0);
         }
 
         private void pnlControlBar_MouseEnter(object sender, MouseEventArgs e)
@@ -56,6 +57,11 @@ namespace Spacebardesktop
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

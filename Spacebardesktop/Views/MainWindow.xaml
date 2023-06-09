@@ -183,7 +183,6 @@
                                 <Ellipse.Fill>
                                     <ImageBrush ImageSource="{Binding CurrentUserAccount.ProfilePicture}"/>
                                 </Ellipse.Fill>
-
                             </Ellipse>
 
                         </StackPanel>

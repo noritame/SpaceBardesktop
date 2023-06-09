@@ -59,9 +59,6 @@ namespace Spacebardesktop
             System.Windows.MessageBox.Show("AAAAA");
         }
 
-        private void titulo_post_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
-        {
-
-        }
+       
     }
 }

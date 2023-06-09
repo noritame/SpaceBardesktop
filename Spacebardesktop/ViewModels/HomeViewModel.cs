@@ -60,7 +60,6 @@ namespace Spacebardesktop.ViewModels
         {
             byte[] foto = GetFoto(homeView.CaminhoFoto);
             String conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-                var sql = "insert into tblPost (titulo_Post, texto_post, data_post, img_post, cod_usuario) values  (@titulo, @texto, @data, @imagem,@id)";
                 String titulo = _title.ToString();
                 String texto = _description.ToString();
                 DateTime? dataAtual = DateTime.Now;
@@ -68,20 +67,17 @@ namespace Spacebardesktop.ViewModels
             using (var con = new SqlConnection(conexaoString))
                 {
                     con.Open();
-                    using (var cmd = new SqlCommand(sql, con))
+                    using (var cmd = new SqlCommand("InsertPost", con))
                     {
-                        cmd.Parameters.Add("@titulo", SqlDbType.VarChar, 300).Value = titulo;
-                        cmd.Parameters.Add("@texto", SqlDbType.VarChar, 100).Value = texto;
-                        if (dataAtual.HasValue)
-                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = dataAtual.Value;
-                        else
-                            cmd.Parameters.Add("@data", SqlDbType.DateTime).Value = DBNull.Value;
-                        cmd.Parameters.Add("@imagem", SqlDbType.Image, foto.Length).Value = foto;
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@titulo", titulo);
+                    cmd.Parameters.AddWithValue("@texto", texto);
+                    cmd.Parameters.AddWithValue("@data", dataAtual);
+                    cmd.Parameters.AddWithValue("@imagem", foto);
                     cmd.Parameters.AddWithValue("@id", user.Id);
                     cmd.ExecuteNonQuery();
                     }
                 }
-            
         }
         
 

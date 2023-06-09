@@ -38,7 +38,6 @@ namespace Spacebardesktop
 
             if (openFile.ShowDialog() == DialogResult.OK)
                 CaminhoFoto = openFile.FileName;
-
         }
 
         private void BtnChange_Click(object sender, RoutedEventArgs e)

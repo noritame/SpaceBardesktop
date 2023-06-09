@@ -51,8 +51,8 @@ namespace Spacebardesktop.Repositories
                 cmd.CommandType = CommandType.StoredProcedure;
                 var parametro = new List<SqlParameter>
         {
-            new SqlParameter("@loguser", credential.UserName),
-            new SqlParameter("@senhauser", credential.Password)
+            new SqlParameter("@login", credential.UserName),
+            new SqlParameter("@senha", credential.Password)
         };
                 cmd.Parameters.AddRange(parametro.ToArray());
 

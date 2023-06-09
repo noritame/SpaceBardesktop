@@ -103,7 +103,7 @@ namespace Spacebardesktop.ViewModels
         {
             string query = "SELECT cod_usuario FROM tblUsuario WHERE login_usuario = @nomeUsuario";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
-
+      
             UserModel user = null;
 
             using (var connection = new SqlConnection(conexaoString))

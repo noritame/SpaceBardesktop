@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Spacebardesktop.Repositories;
 
 namespace Spacebardesktop
 {
@@ -23,13 +24,13 @@ namespace Spacebardesktop
     /// </summary>
     public partial class UserView 
     {
+       
         public string CaminhoFoto = "";
-        private readonly UserViewModel userView = new UserViewModel();
         public UserView()
         {
             InitializeComponent();
-        }
-        private void CarregarFoto()
+            }
+        public void CarregarFoto()
         {
             var openFile = new OpenFileDialog();
             openFile.Filter = "Arquivos de imagens jpg e png|*.jpg;*.png";
@@ -44,5 +45,12 @@ namespace Spacebardesktop
         {
             CarregarFoto();
         }
+
+        private void BtnSalvar_Click(object sender, RoutedEventArgs e)
+        {
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.Salvar(userViewModel);
+        }
     }
-}
+ }
+

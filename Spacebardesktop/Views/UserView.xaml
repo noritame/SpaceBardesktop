@@ -77,6 +77,43 @@
                 x:Name="lblImagem"
                 Margin="10,10,100,10" Height="146" Width="215" RenderTransformOrigin="0.463,0.524"
                 />
+
+            <Button x:Name="btnSalvar"
+                        BorderThickness="0"
+                        Content="Salvar Mudanças"
+                        Foreground="White"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="2" 
+                        RenderTransformOrigin="0.5,0.5" 
+                        Margin="300,-80,-90,20" 
+                        Click="BtnSalvar_Click" Height="59" Width="143"
+                        >
+
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#DA34AE"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFA92987"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Width="100" Height="30"
+                                    CornerRadius="20"
+                                    Background="{TemplateBinding Background}">
+                            <ContentPresenter VerticalAlignment="Center"
+                                                  HorizontalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
         </StackPanel>
+        
+        
     </Grid>
 </UserControl>

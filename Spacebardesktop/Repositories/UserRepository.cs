@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -16,6 +17,11 @@ namespace Spacebardesktop.Repositories
     public class UserRepository : Repositorio, IUserRepository
     {
         private string _errorManage;
+        //private string caminhoFoto;
+        //public UserRepository(string caminhoFoto)
+        //{
+        //    this.caminhoFoto = caminhoFoto;
+        //}
         public string ErrorManage
         {
 
@@ -42,7 +48,6 @@ namespace Spacebardesktop.Repositories
         public bool AuthenticateUser(NetworkCredential credential)
         {
             int userId;
-            int userType;
             bool validUser = false;
 
             using (var connection = GetConnection())
@@ -68,13 +73,25 @@ namespace Spacebardesktop.Repositories
                         if(user != null && !IsInvalidUserType(user.Type)) 
                         { 
                         userId = Convert.ToInt32(reader["cod_usuario"]);
-                        validUser = true;
+                            validUser = true;
                         }   
                     }
                 }
             }
             return validUser;
         }
+        //private void AdicionarIconeAoUsuario(int userId, string caminhoIcone)
+        //{
+        //    byte[] iconBytes = File.ReadAllBytes(caminhoIcone);
+        //    using (var connection = GetConnection())
+        //    using (var cmd = new SqlCommand("UPDATE tblUsuario SET icon_usuario = @icon WHERE cod_usuario = @userId", connection))
+        //    {
+        //        cmd.Parameters.Add("@icon", SqlDbType.Image).Value = iconBytes;
+        //        cmd.Parameters.Add("@userId", SqlDbType.Int).Value = userId;
+        //        connection.Open();
+        //        cmd.ExecuteNonQuery();
+        //    }
+        //}
 
         public static bool IsInvalidUserType(string userType)
         {

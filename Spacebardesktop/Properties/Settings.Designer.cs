@@ -23,6 +23,18 @@ namespace Spacebardesktop.Properties {
             }
         }
         
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
+        public string ColorMode {
+            get {
+                return ((string)(this["ColorMode"]));
+            }
+            set {
+                this["ColorMode"] = value;
+            }
+        }
+        
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
@@ -33,15 +45,14 @@ namespace Spacebardesktop.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Light")]
-        public string ColorMode {
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=Bastos;Initial Catalog=SpaceBar;Persist Security Info=True;User ID=sa" +
+            ";Password=123456")]
+        public string SpaceBarConnectionString1 {
             get {
-                return ((string)(this["ColorMode"]));
-            }
-            set {
-                this["ColorMode"] = value;
+                return ((string)(this["SpaceBarConnectionString1"]));
             }
         }
     }

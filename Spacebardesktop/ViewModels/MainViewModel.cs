@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using FontAwesome.Sharp;
 using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
@@ -63,14 +66,11 @@ namespace Spacebardesktop.ViewModels
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
             ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
-            //ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
-
             //Default View
-            ExecuteShowHomeViewCommand(null);
             ExecuteShowUserViewCommand(null);
+            ExecuteShowHomeViewCommand(null);
             LoadCurrentUserData();
         }
-
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
@@ -78,6 +78,7 @@ namespace Spacebardesktop.ViewModels
             Caption = "Criar Post";
             Icon = IconChar.Pen;
         }
+
         private void ExecuteShowUserViewCommand(object obj)
         {
             CurrentChildView = new UserViewModel();
@@ -85,19 +86,40 @@ namespace Spacebardesktop.ViewModels
             Icon = IconChar.User;
         }
 
-        private void LoadCurrentUserData()
+        public void LoadCurrentUserData()
         {
             var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
             if (user != null)
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-                CurrentUserAccount.ProfilePicture = null;
+                
+                MainViewModel mainViewModel = new MainViewModel();
+                UserView userView = new UserView();
+                UserViewModel userViewModel = new UserViewModel();
+                string iconPath = userView.CaminhoFoto; 
+                if(!string.IsNullOrEmpty(iconPath))
+{
+                    ImageSource profilePicture = userViewModel.LoadIconImage(iconPath);
+                    mainViewModel.CurrentUserAccount.ProfilePicture = ConvertImageSourceToByteArray(profilePicture);
+                }
             }
             else
             {
-               CurrentUserAccount.DisplayName="Usuario Invalido";
+                CurrentUserAccount.DisplayName = "Usuário Inválido";
+            }
+        }
+        private byte[] ConvertImageSourceToByteArray(ImageSource imageSource)
+        {
+            if (imageSource == null)
+                return null;
 
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BitmapEncoder encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(imageSource as BitmapSource));
+                encoder.Save(ms);
+                return ms.ToArray();
             }
         }
     }

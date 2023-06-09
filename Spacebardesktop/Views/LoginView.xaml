@@ -123,7 +123,7 @@
             <StackPanel
                         Orientation="Vertical"
                         Margin="49,10,28,-45" Grid.Row="1">
-                <Image Source="Imagens\Icon.png" Height="90" RenderTransformOrigin="0.53,2.235"
+                <Image Source="\Imagens\Icon.png" Height="90" RenderTransformOrigin="0.53,2.235"
                        Width="80"/>
                 <TextBlock Text="Sintam-se em casa!"
                            Foreground="White"
@@ -166,7 +166,7 @@
                          RenderTransformOrigin="0.61,0.464"
                          Padding="20,0,0,0" Width="256">
                     <TextBox.Background>
-                        <ImageBrush ImageSource="Imagens\icons8-astronaut-60.png" 
+                        <ImageBrush ImageSource="\Imagens\icons8-astronaut-60.png" 
                                     Stretch="None" 
                                     AlignmentX="Left" />
                     </TextBox.Background>

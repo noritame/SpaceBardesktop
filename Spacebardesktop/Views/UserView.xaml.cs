@@ -48,8 +48,8 @@ namespace Spacebardesktop
 
         private void BtnSalvar_Click(object sender, RoutedEventArgs e)
         {
-            UserViewModel userViewModel = new UserViewModel();
-            userViewModel.Salvar(userViewModel);
+            
+
         }
     }
  }

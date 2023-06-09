@@ -94,14 +94,13 @@ namespace Spacebardesktop.ViewModels
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
                 
-                MainViewModel mainViewModel = new MainViewModel();
                 UserView userView = new UserView();
                 UserViewModel userViewModel = new UserViewModel();
                 string iconPath = userView.CaminhoFoto; 
                 if(!string.IsNullOrEmpty(iconPath))
 {
                     ImageSource profilePicture = userViewModel.LoadIconImage(iconPath);
-                    mainViewModel.CurrentUserAccount.ProfilePicture = ConvertImageSourceToByteArray(profilePicture);
+                    CurrentUserAccount.ProfilePicture = ConvertImageSourceToByteArray(profilePicture);
                 }
             }
             else

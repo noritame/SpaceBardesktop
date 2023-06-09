@@ -20,12 +20,12 @@
             BorderBrush="#D9D9D9"
             BorderThickness="3" 
             CornerRadius="8,8,8,8"  
-            Margin="10,-6,0,41" Grid.RowSpan="2">
+            Margin="10,-6,-8,41" Grid.RowSpan="2">
             <StackPanel
             Orientation="Vertical"
              Margin="10,10,10,3" Grid.RowSpan="2"
             >
-           
+
                 <TextBlock 
                 Text="Titulo"
                 Margin="20,20,10,10"
@@ -51,17 +51,17 @@
             />
 
 
-                <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="12,12,12,12" Margin="10,10,0,10">
+                <Border Background="White" BorderBrush="Silver" BorderThickness="1" CornerRadius="12,12,12,12" Margin="10,10,0,10" Height="94">
                     <TextBox
                     x:Name="desc_post"
                     FontSize="16"
                     TextAlignment="Left"
                     FontWeight="Medium"
+                    TextWrapping="Wrap"
                     FontFamily="Segoe UI"
-                    Height="130"
                     BorderBrush="White"
                     VerticalContentAlignment="Top"
-                    Margin="1,0,5,1" 
+                    Margin="1,0,5,-2" 
                     RenderTransformOrigin="0.61,0.464"
                     Padding="2,0,0,30" Background="White" Width="561" 
                 />
@@ -107,40 +107,25 @@
 
                 <Button x:Name="btnImagen"
                         BorderThickness="0"
-                        Content="Imagem"
                         Foreground="White"
+                        Background="White"
                         FontSize="12"
                         FontFamily="Montserrat"
                         Cursor="Hand"
                         Grid.Column="2" 
                         RenderTransformOrigin="0.5,0.5" 
                         Margin="-440,-50,15,3" 
-                        Click="btnImagen_Click" Height="59" Width="102"
+                        Click="btnImagen_Click" Height="53" Width="54"
                         >
 
-                    <Button.Style>
-                        <Style TargetType="Button">
-                            <Setter Property="Background" Value="#ff00ff"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Background" Value="#ff00ff"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Button.Style>
-                    <Button.Template>
-                        <ControlTemplate TargetType="Button">
-                            <Border Width="100" Height="30"
-                                    CornerRadius="15"
-                                    Background="{TemplateBinding Background}">
-                                <ContentPresenter VerticalAlignment="Center"
-                                                  HorizontalAlignment="Center"/>
-                            </Border>
-                        </ControlTemplate>
-                    </Button.Template>
+                    <Image Source="/Imagens/folder2.png"  Width="50" Height="50"/>
                 </Button>
-           
-        </StackPanel>
+                
+                <Label>
+                    <Image x:Name="imageControl" Width="100" Height="100"
+                            Margin="130,-70,15,0" />
+                </Label>
+            </StackPanel>
         </Border>
     </Grid>
 </UserControl>

@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-
+using System.Windows.Media.Imaging;
 
 namespace Spacebardesktop
 {
@@ -41,6 +41,12 @@ namespace Spacebardesktop
 
             if(openFile.ShowDialog()== DialogResult.OK)
                 CaminhoFoto = openFile.FileName;
+
+            if (!string.IsNullOrEmpty(CaminhoFoto))
+            {
+                BitmapImage image = new BitmapImage(new Uri(CaminhoFoto));
+                imageControl.Source = image;
+            }
 
         }
         private void Salvar()

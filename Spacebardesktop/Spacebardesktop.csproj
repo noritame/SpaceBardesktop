@@ -177,6 +177,8 @@
     <Resource Include="Imagens\logo_Icon.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Imagens\folder.png" />
+    <Resource Include="Imagens\folder2.png" />
     <Content Include="Imagens\IconImage.jfif" />
     <Resource Include="Imagens\imageIcon.jpg" />
   </ItemGroup>

@@ -56,7 +56,7 @@ namespace Spacebardesktop
             homeView.CaminhoFoto = CaminhoFoto;
             homeView.Salvar(homeView);
 
-            System.Windows.MessageBox.Show("AAAAA");
+            System.Windows.MessageBox.Show("Post Inserido com Sucesso!");
         }
 
        

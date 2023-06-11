@@ -12,12 +12,12 @@ namespace Spacebardesktop.Repositories
 
    public class Repositorio
     {
-        private readonly string connectionString;
+        public readonly string connectionString;
         public Repositorio()//conecxao com o sql.
         {
             connectionString = "Server=(local); Database=SpaceBar; Integrated Security=true";
         }
-        protected SqlConnection GetConnection()
+        public SqlConnection GetConnection()
         {
             return new SqlConnection(connectionString);
         }

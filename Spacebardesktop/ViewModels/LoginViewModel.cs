@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using BCrypt.Net;
 
 
 
@@ -20,7 +20,7 @@ namespace Spacebardesktop.ViewModels
     {
         //Campos
         private string _username;
-        private SecureString _password;
+        private string _password;
         private string _errorManage;
         private bool _isViewVisible=true;
         private UserRepository userRepository;  
@@ -42,7 +42,7 @@ namespace Spacebardesktop.ViewModels
             } 
         
         }
-        public SecureString Password {
+        public string Password {
 
             get
             {
@@ -110,7 +110,7 @@ namespace Spacebardesktop.ViewModels
 
         }
 
-        private bool CanExecuteLoginCommand(object obj)//codigo de verificaçao de usuario.
+        public bool CanExecuteLoginCommand(object obj)//codigo de verificaçao de usuario.
         {
 
             bool validData;
@@ -121,7 +121,7 @@ namespace Spacebardesktop.ViewModels
             return validData;
         }
 
-        private void ExecuteLoginCommand(object obj)
+        public void ExecuteLoginCommand(object obj)
         {
             var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
 
@@ -143,6 +143,5 @@ namespace Spacebardesktop.ViewModels
                 ErrorManage = "* Usuário ou senha inválidos";
             }
         }
-
     }
 }

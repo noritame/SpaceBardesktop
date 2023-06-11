@@ -11,6 +11,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using BCrypt.Net;
+using System.Diagnostics.Contracts;
 
 namespace Spacebardesktop.Repositories
 {
@@ -49,37 +51,114 @@ namespace Spacebardesktop.Repositories
         {
             int userId;
             bool validUser = false;
+            DataTable dt = new DataTable();
 
             using (var connection = GetConnection())
-            using (var cmd = new SqlCommand("spacelogin", connection))
             {
-                connection.Open();
-                cmd.CommandType = CommandType.StoredProcedure;
-                var parametro = new List<SqlParameter>
-        {
-            new SqlParameter("@login", credential.UserName),
-            new SqlParameter("@senha", credential.Password)
-        };
-                cmd.Parameters.AddRange(parametro.ToArray());
-
-                // Executar a consulta e verificar se há um resultado válido
-                using (var reader = cmd.ExecuteReader())
+                using (var cmd = new SqlCommand("spacelogin", connection))
                 {
-                    if (reader.Read())
-                    {
-                        string nomeUsuario = credential.UserName;
-                        UserModel user = GetByType(nomeUsuario);
+                    connection.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    var parametro = new List<SqlParameter>
+            {
+                new SqlParameter("@loguser", credential.UserName),
+                new SqlParameter("@senhauser", credential.Password)
+            };
+                    cmd.Parameters.AddRange(parametro.ToArray());
 
-                        if(user != null && !IsInvalidUserType(user.Type)) 
-                        { 
-                        userId = Convert.ToInt32(reader["cod_usuario"]);
-                            validUser = true;
-                        }   
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        UpdatePasswords();
+                        dt.Clear();
+                        dt.Load(reader);
+                        if (dt.DefaultView.Count == 1)
+
+                        {
+                            string nomeUsuario = credential.UserName;
+                            string senhaUsuario = credential.Password;
+                            string senhaUsuarioFromDatabase = dt.Rows[0]["senha_usuario"].ToString();
+                            bool senhaCorreta = false;
+                            if(!string.IsNullOrEmpty(senhaUsuarioFromDatabase) && senhaUsuarioFromDatabase.Length >= 60)
+                            {
+                                senhaCorreta = BCrypt.Net.BCrypt.Verify(senhaUsuario, senhaUsuarioFromDatabase);
+                            }
+                            if (senhaCorreta)
+                            {
+                                UserModel user = GetByType(nomeUsuario);
+
+                                if (user != null && !IsInvalidUserType(user.Type))
+                                {
+                                    userId = Convert.ToInt32(dt.Rows[0]["cod_usuario"]);
+                                    validUser = true;
+                                }
+                            } 
+                        }
                     }
                 }
             }
+
             return validUser;
         }
+
+
+        private bool VerifyPassword(string plainPassword, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);
+        }
+
+        private void UpdatePasswords()
+        {
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+
+                using (var selectCmd = new SqlCommand("SELECT cod_usuario, senha_usuario FROM tblUsuario", connection))
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    List<Tuple<int, string>> passwordsToUpdate = new List<Tuple<int, string>>();
+
+                    while (reader.Read())
+                    {
+                        int userId = reader.GetInt32(0);
+                        string plainPassword = reader.GetString(1);
+                        Console.WriteLine($"Password before hashing: {plainPassword}");
+                        string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
+                        Console.WriteLine($"Password after hashing: {hashedPassword}");
+                        if (hashedPassword.Length > 100) // Verifique o tamanho máximo permitido para a coluna senha_usuario
+                        {
+                            // Reduzir o tamanho da senha criptografada
+                            hashedPassword = hashedPassword.Substring(0, 100);
+                        }
+
+                        passwordsToUpdate.Add(new Tuple<int, string>(userId, hashedPassword));
+                    }
+
+                    reader.Close();
+
+                    foreach (var passwordTuple in passwordsToUpdate)
+                    {
+                        int userId = passwordTuple.Item1;
+                        string hashedPassword = passwordTuple.Item2;
+
+                        using (var updateCmd = new SqlCommand("UPDATE tblUsuario SET senha_usuario = @hashedPassword WHERE cod_usuario = @userId", connection))
+                        {
+                            updateCmd.Parameters.AddWithValue("@hashedPassword", hashedPassword);
+                            updateCmd.Parameters.AddWithValue("@userId", userId);
+                            updateCmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
         //private void AdicionarIconeAoUsuario(int userId, string caminhoIcone)
         //{
         //    byte[] iconBytes = File.ReadAllBytes(caminhoIcone);
@@ -124,8 +203,9 @@ namespace Spacebardesktop.Repositories
                     {
                         user = new UserModel()
                         {
+                            Id = reader["cod_usuario"].ToString(),
                             Username = reader["login_usuario"].ToString(),
-                            Password = string.Empty
+                            PasswordHash = reader["senha_usuario"].ToString(),
 
                         };
                     }

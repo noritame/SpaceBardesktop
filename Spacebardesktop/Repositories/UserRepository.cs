@@ -50,37 +50,45 @@ namespace Spacebardesktop.Repositories
         public bool AuthenticateUser(NetworkCredential credential)
         {
             bool validUser = false;
+
+            // Comparar as senhas criptografadas
             using (var connection = GetConnection())
             {
-                using (var cmd = new SqlCommand("spacelogin", connection))
+                using (var cmd = new SqlCommand("SELECT senha_usuario FROM tblUsuario WHERE login_usuario = @username", connection))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    // Utilizar parâmetros nomeados
-                    cmd.Parameters.Add(new SqlParameter { ParameterName = "@loguser", Value = credential.UserName });
-                    cmd.Parameters.Add(new SqlParameter { ParameterName = "@senhauser", Value = credential.Password });
-
+                    cmd.Parameters.AddWithValue("@username", credential.UserName);
                     connection.Open();
 
                     using (var reader = cmd.ExecuteReader())
                     {
                         if (reader.Read())
                         {
-                            UpdatePasswords();
-                            string nomeUsuario = credential.UserName;
                             string senhaUsuarioFromDatabase = reader["senha_usuario"].ToString();
-                            if (!string.IsNullOrEmpty(senhaUsuarioFromDatabase) && senhaUsuarioFromDatabase.Length >= 60)
+                            bool senhaCorreta = BCrypt.Net.BCrypt.Verify(credential.Password, senhaUsuarioFromDatabase);
+
+                            if (senhaCorreta)
                             {
-                                bool senhaCorreta = BCrypt.Net.BCrypt.Verify(credential.Password, senhaUsuarioFromDatabase);
-
-                                if (senhaCorreta)
+                                reader.Close();
+                                // Senha correta, chamar a stored procedure para verificar o usuário
+                                using (var cmdProcedure = new SqlCommand("spacelogin", connection))
                                 {
-                                    UserModel user = GetByType(nomeUsuario);
+                                    cmdProcedure.CommandType = CommandType.StoredProcedure;
+                                    cmdProcedure.Parameters.Add(new SqlParameter { ParameterName = "@loguser", Value = credential.UserName });
+                                    cmdProcedure.Parameters.Add(new SqlParameter { ParameterName = "@senhauser", Value = senhaUsuarioFromDatabase });
 
-                                    if (user != null && !IsInvalidUserType(user.Type))
+                                    using (var readerProcedure = cmdProcedure.ExecuteReader())
                                     {
-                                        int userId = Convert.ToInt32(reader["cod_usuario"]);
-                                        validUser = true;
+                                        if (readerProcedure.Read())
+                                        {
+                                            string nomeUsuario = credential.UserName;
+                                            UserModel user = GetByType(nomeUsuario);
+
+                                            if (user != null && !IsInvalidUserType(user.Type))
+                                            {
+                                                int userId = Convert.ToInt32(readerProcedure["cod_usuario"]);
+                                                validUser = true;
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -88,6 +96,7 @@ namespace Spacebardesktop.Repositories
                     }
                 }
             }
+
             return validUser;
         }
 
@@ -108,11 +117,13 @@ namespace Spacebardesktop.Repositories
                     {
                         int userId = reader.GetInt32(0);
                         string plainPassword = reader.GetString(1);
+                        Console.WriteLine($"Password before hashing: {plainPassword}");
                         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
-                        if (hashedPassword.Length > 100) // Verifique o tamanho máximo permitido para a coluna senha_usuario
+                        Console.WriteLine($"Password after hashing: {hashedPassword}");
+                        if (hashedPassword.Length > 60) // Verifique o tamanho máximo permitido para a coluna senha_usuario
                         {
                             // Reduzir o tamanho da senha criptografada
-                            hashedPassword = hashedPassword.Substring(0, 100);
+                            hashedPassword = hashedPassword.Substring(0, 60);
                         }
 
                         passwordsToUpdate.Add(new Tuple<int, string>(userId, hashedPassword));
@@ -154,10 +165,7 @@ namespace Spacebardesktop.Repositories
             // Verifique se o userType é diferente de "2", "4" ou "5"
             return userType != "2" && userType != "4" && userType != "5";
         }
-        public void Edit(UserModel userModel)
-        {
-            throw new NotImplementedException();
-        }
+      
 
         public IEnumerable<UserModel> GetByAll()
         {
@@ -191,10 +199,6 @@ namespace Spacebardesktop.Repositories
             return user;
         }
 
-        public void Remove(int id)
-        {
-            throw new NotImplementedException();
-        }
 
 
         public static UserModel GetByType(string nomeUsuarioType)

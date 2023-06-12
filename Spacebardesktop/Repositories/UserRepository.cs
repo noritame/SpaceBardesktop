@@ -49,62 +49,49 @@ namespace Spacebardesktop.Repositories
 
         public bool AuthenticateUser(NetworkCredential credential)
         {
-            int userId;
             bool validUser = false;
-            DataTable dt = new DataTable();
-
             using (var connection = GetConnection())
             {
                 using (var cmd = new SqlCommand("spacelogin", connection))
                 {
-                    connection.Open();
                     cmd.CommandType = CommandType.StoredProcedure;
-                    var parametro = new List<SqlParameter>
-            {
-                new SqlParameter("@loguser", credential.UserName),
-                new SqlParameter("@senhauser", credential.Password)
-            };
-                    cmd.Parameters.AddRange(parametro.ToArray());
+
+                    // Utilizar parâmetros nomeados
+                    cmd.Parameters.Add(new SqlParameter { ParameterName = "@loguser", Value = credential.UserName });
+                    cmd.Parameters.Add(new SqlParameter { ParameterName = "@senhauser", Value = credential.Password });
+
+                    connection.Open();
 
                     using (var reader = cmd.ExecuteReader())
                     {
-                        UpdatePasswords();
-                        dt.Clear();
-                        dt.Load(reader);
-                        if (dt.DefaultView.Count == 1)
-
+                        if (reader.Read())
                         {
+                            UpdatePasswords();
                             string nomeUsuario = credential.UserName;
-                            string senhaUsuario = credential.Password;
-                            string senhaUsuarioFromDatabase = dt.Rows[0]["senha_usuario"].ToString();
-                            bool senhaCorreta = false;
-                            if(!string.IsNullOrEmpty(senhaUsuarioFromDatabase) && senhaUsuarioFromDatabase.Length >= 60)
+                            string senhaUsuarioFromDatabase = reader["senha_usuario"].ToString();
+                            if (!string.IsNullOrEmpty(senhaUsuarioFromDatabase) && senhaUsuarioFromDatabase.Length >= 60)
                             {
-                                senhaCorreta = BCrypt.Net.BCrypt.Verify(senhaUsuario, senhaUsuarioFromDatabase);
-                            }
-                            if (senhaCorreta)
-                            {
-                                UserModel user = GetByType(nomeUsuario);
+                                bool senhaCorreta = BCrypt.Net.BCrypt.Verify(credential.Password, senhaUsuarioFromDatabase);
 
-                                if (user != null && !IsInvalidUserType(user.Type))
+                                if (senhaCorreta)
                                 {
-                                    userId = Convert.ToInt32(dt.Rows[0]["cod_usuario"]);
-                                    validUser = true;
+                                    UserModel user = GetByType(nomeUsuario);
+
+                                    if (user != null && !IsInvalidUserType(user.Type))
+                                    {
+                                        int userId = Convert.ToInt32(reader["cod_usuario"]);
+                                        validUser = true;
+                                    }
                                 }
-                            } 
+                            }
                         }
                     }
                 }
             }
-
             return validUser;
         }
 
 
-        private bool VerifyPassword(string plainPassword, string hashedPassword)
-        {
-            return BCrypt.Net.BCrypt.Verify(plainPassword, hashedPassword);
-        }
 
         private void UpdatePasswords()
         {
@@ -121,9 +108,7 @@ namespace Spacebardesktop.Repositories
                     {
                         int userId = reader.GetInt32(0);
                         string plainPassword = reader.GetString(1);
-                        Console.WriteLine($"Password before hashing: {plainPassword}");
                         string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
-                        Console.WriteLine($"Password after hashing: {hashedPassword}");
                         if (hashedPassword.Length > 100) // Verifique o tamanho máximo permitido para a coluna senha_usuario
                         {
                             // Reduzir o tamanho da senha criptografada
@@ -150,14 +135,6 @@ namespace Spacebardesktop.Repositories
                 }
             }
         }
-
-
-
-
-
-
-
-
 
         //private void AdicionarIconeAoUsuario(int userId, string caminhoIcone)
         //{

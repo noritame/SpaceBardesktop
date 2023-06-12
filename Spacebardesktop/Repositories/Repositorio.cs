@@ -8,7 +8,7 @@ using System.Data;
 
 namespace Spacebardesktop.Repositories
 {
-
+   
 
    public class Repositorio
     {

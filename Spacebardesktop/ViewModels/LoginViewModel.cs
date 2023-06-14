@@ -1,4 +1,5 @@
 ﻿using Spacebardesktop.Repositories;
+using Spacebardesktop.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
+using BCrypt.Net;
 
 
 
@@ -19,7 +20,7 @@ namespace Spacebardesktop.ViewModels
     {
         //Campos
         private string _username;
-        private SecureString _password;
+        private string _password;
         private string _errorManage;
         private bool _isViewVisible=true;
         private UserRepository userRepository;  
@@ -41,7 +42,7 @@ namespace Spacebardesktop.ViewModels
             } 
         
         }
-        public SecureString Password {
+        public string Password {
 
             get
             {
@@ -109,30 +110,37 @@ namespace Spacebardesktop.ViewModels
 
         }
 
-        private bool CanExecuteLoginCommand(object obj)//codigo de verificaçao de usuario.
+        public bool CanExecuteLoginCommand(object obj)//codigo de verificaçao de usuario.
         {
 
             bool validData;
             if (string.IsNullOrEmpty(Username) || Username.Length < 3 || Password == null || Password.Length < 3)// Nome do usuario e senha com menos de 3 caracteres não serão aceitos.
                 validData = false;
-            else
+                else
                 validData = true;
             return validData;
         }
 
-        private void ExecuteLoginCommand(object obj)
+        public void ExecuteLoginCommand(object obj)
         {
-  
-            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username,Password));
-            if (isValidUser)// usuario valido
-               
+            var isValidUser = userRepository.AuthenticateUser(new NetworkCredential(Username, Password));
+
+            if (isValidUser)
             {
-                Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username),null );
-                IsViewVisible = false;
+                var user = userRepository.GetByUsername(Username);
+                if (user != null && UserRepository.IsInvalidUserType(user.Type))
+                {
+                    Thread.CurrentPrincipal = new GenericPrincipal(new GenericIdentity(Username), null);
+                    IsViewVisible = false;
+                }
+                else
+                {
+                    ErrorManage = "* Tipo de usuário não permitido";
+                }
             }
-            else// usuario invalido
+            else
             {
-                ErrorManage = "* Usuario ou senha invalidos";
+                ErrorManage = "* Usuário ou senha inválidos";
             }
         }
     }

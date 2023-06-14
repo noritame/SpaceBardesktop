@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using FontAwesome.Sharp;
 using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
@@ -27,21 +31,24 @@ namespace Spacebardesktop.ViewModels
         public UserAccountModel CurrentUserAccount
         {
             get { return _currentUserAccount; }
-            set { _currentUserAccount = value;  OnPropertyChanged(nameof(CurrentUserAccount)); }
-        
+            set { _currentUserAccount = value; OnPropertyChanged(nameof(CurrentUserAccount)); }
+
         }
 
-        public ViewModelBase CurrentChildView 
+        public ViewModelBase CurrentChildView
         {
-            get{return _currentChildView;}
-            set{ _currentChildView = value; OnPropertyChanged(nameof(CurrentChildView)); }
+            get { return _currentChildView; }
+            set { _currentChildView = value; OnPropertyChanged(nameof(CurrentChildView)); }
 
         }
         public string Caption
         {
             get { return _caption; }
-            set { _caption = value;     
-                OnPropertyChanged(nameof(Caption)); }
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
         }
         public IconChar Icon
         {
@@ -51,55 +58,59 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowSettingsViewCommand { get; }
+        public ICommand ShowUserViewCommand { get; }
 
         public MainViewModel()
         {
-           userRepository = new UserRepository();
-           CurrentUserAccount = new UserAccountModel();
+            userRepository = new UserRepository();
+            CurrentUserAccount = new UserAccountModel();
 
 
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowSettingsViewCommand = new ViewModelCommand(ExecuteShowSettingsViewCommand);
-
+            ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
             //Default View
+            ExecuteShowUserViewCommand(null);
             ExecuteShowHomeViewCommand(null);
-            ExecuteShowSettingsViewCommand(null);
             LoadCurrentUserData();
         }
 
         private void ExecuteShowHomeViewCommand(object obj)
         {
             CurrentChildView = new HomeViewModel();
-            Caption = "Dashboard";
-            Icon = IconChar.Home;
+            Caption = "Criar Post";
+            Icon = IconChar.Pen;
         }
-        private void ExecuteShowSettingsViewCommand(object obj)
+
+        private void ExecuteShowUserViewCommand(object obj)
         {
-            CurrentChildView = new SettingsViewModel();
-            Caption = "Settings";
-            Icon = IconChar.Gear;
+            CurrentChildView = new UserViewModel();
+            Caption = "Configurações do usuario";
+            Icon = IconChar.User;
         }
 
-        
-
-        private void LoadCurrentUserData()
+        public void LoadCurrentUserData()
         {
             var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
             if (user != null)
             {
                 CurrentUserAccount.Username = user.Username;
-                CurrentUserAccount.DisplayName = $"{user.Name}";
-                CurrentUserAccount.ProfilePicture = null;
+                CurrentUserAccount.DisplayName = $"{user.Username}";
+
+                // Obter o objeto UserModel com a imagem do perfil
+                if (user.Icon != null && user.Icon.Length > 0)
+                {
+                    // Atribua o array de bytes da imagem do perfil à propriedade ProfilePicture
+                    CurrentUserAccount.ProfilePicture = user.Icon;
+                }
             }
             else
-            {
-               CurrentUserAccount.DisplayName="Usuario Invalido";
-
+                {
+                    CurrentUserAccount.DisplayName = "Usuário Inválido";
+                }
             }
         }
     }
-}
+
  

@@ -116,7 +116,7 @@ namespace Spacebardesktop.ViewModels
             bool validData;
             if (string.IsNullOrEmpty(Username) || Username.Length < 3 || Password == null || Password.Length < 3)// Nome do usuario e senha com menos de 3 caracteres não serão aceitos.
                 validData = false;
-            else
+                else
                 validData = true;
             return validData;
         }

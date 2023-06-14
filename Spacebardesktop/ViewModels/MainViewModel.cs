@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -30,21 +31,24 @@ namespace Spacebardesktop.ViewModels
         public UserAccountModel CurrentUserAccount
         {
             get { return _currentUserAccount; }
-            set { _currentUserAccount = value;  OnPropertyChanged(nameof(CurrentUserAccount)); }
-        
+            set { _currentUserAccount = value; OnPropertyChanged(nameof(CurrentUserAccount)); }
+
         }
 
-        public ViewModelBase CurrentChildView 
+        public ViewModelBase CurrentChildView
         {
-            get{return _currentChildView;}
-            set{ _currentChildView = value; OnPropertyChanged(nameof(CurrentChildView)); }
+            get { return _currentChildView; }
+            set { _currentChildView = value; OnPropertyChanged(nameof(CurrentChildView)); }
 
         }
         public string Caption
         {
             get { return _caption; }
-            set { _caption = value;     
-                OnPropertyChanged(nameof(Caption)); }
+            set
+            {
+                _caption = value;
+                OnPropertyChanged(nameof(Caption));
+            }
         }
         public IconChar Icon
         {
@@ -58,8 +62,8 @@ namespace Spacebardesktop.ViewModels
 
         public MainViewModel()
         {
-           userRepository = new UserRepository();
-           CurrentUserAccount = new UserAccountModel();
+            userRepository = new UserRepository();
+            CurrentUserAccount = new UserAccountModel();
 
 
             //inicialização dos comandos
@@ -93,34 +97,20 @@ namespace Spacebardesktop.ViewModels
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-                
-                UserView userView = new UserView();
-                UserViewModel userViewModel = new UserViewModel();
-                string iconPath = userView.CaminhoFoto; 
-                if(!string.IsNullOrEmpty(iconPath))
-{
-                    ImageSource profilePicture = userViewModel.LoadIconImage(iconPath);
-                    CurrentUserAccount.ProfilePicture = ConvertImageSourceToByteArray(profilePicture);
+
+                // Obter o objeto UserModel com a imagem do perfil
+                if (user.Icon != null && user.Icon.Length > 0)
+                {
+                    // Atribua o array de bytes da imagem do perfil à propriedade ProfilePicture
+                    CurrentUserAccount.ProfilePicture = user.Icon;
                 }
             }
             else
-            {
-                CurrentUserAccount.DisplayName = "Usuário Inválido";
-            }
-        }
-        private byte[] ConvertImageSourceToByteArray(ImageSource imageSource)
-        {
-            if (imageSource == null)
-                return null;
-
-            using (MemoryStream ms = new MemoryStream())
-            {
-                BitmapEncoder encoder = new PngBitmapEncoder();
-                encoder.Frames.Add(BitmapFrame.Create(imageSource as BitmapSource));
-                encoder.Save(ms);
-                return ms.ToArray();
+                {
+                    CurrentUserAccount.DisplayName = "Usuário Inválido";
+                }
             }
         }
     }
-}
+
  

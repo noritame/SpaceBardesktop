@@ -34,6 +34,7 @@ namespace Spacebardesktop
             HomeViewModel.GetById(nomeUsuario);
             string nomeUsusarioType = txtUser.Text;
             UserRepository.GetByType(nomeUsusarioType);
+            
         }
 
         private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)

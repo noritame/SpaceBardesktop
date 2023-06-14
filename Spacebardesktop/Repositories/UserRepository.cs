@@ -73,11 +73,14 @@ namespace Spacebardesktop.Repositories
                                 reader.Close();
 
                                 // Senha correta, chamar a stored procedure para verificar o usuário
-                                parameters.Add(new SqlParameter("@loguser", credential.UserName));
-                                parameters.Add(new SqlParameter("@senhauser", senhaUsuarioFromDatabase));
 
+                                // Crie a lista de parâmetros e adicione os parâmetros necessários
+                                List<SqlParameter> existingParameters = new List<SqlParameter>();
+                                existingParameters.Add(new SqlParameter("@loguser", credential.UserName));
+
+                                // Chame a stored procedure passando os parâmetros corretamente
                                 Repositorio repositorio = new Repositorio();
-                                DataSet dt = repositorio.SqlProcedure("spacelogin", parameters);
+                                DataSet dt = repositorio.SqlProcedure("spacelogin", existingParameters);
 
                                 if (dt.Tables.Count > 0 && dt.Tables[0].Rows.Count > 0)
                                 {
@@ -90,6 +93,8 @@ namespace Spacebardesktop.Repositories
                                     }
                                 }
                             }
+
+
                         }
                     }
                 }
@@ -97,54 +102,6 @@ namespace Spacebardesktop.Repositories
 
             return validUser;
         }
-
-
-
-
-        //private void UpdatePasswords()
-        //{
-        //    using (var connection = GetConnection())
-        //    {
-        //        connection.Open();
-
-        //        using (var selectCmd = new SqlCommand("SELECT cod_usuario, senha_usuario FROM tblUsuario", connection))
-        //        using (var reader = selectCmd.ExecuteReader())
-        //        {
-        //            List<Tuple<int, string>> passwordsToUpdate = new List<Tuple<int, string>>();
-
-        //            while (reader.Read())
-        //            {
-        //                int userId = reader.GetInt32(0);
-        //                string plainPassword = reader.GetString(1);
-        //                Console.WriteLine($"Password before hashing: {plainPassword}");
-        //                string hashedPassword = BCrypt.Net.BCrypt.HashPassword(plainPassword);
-        //                Console.WriteLine($"Password after hashing: {hashedPassword}");
-        //                if (hashedPassword.Length > 60) // Verifique o tamanho máximo permitido para a coluna senha_usuario
-        //                {
-        //                    // Reduzir o tamanho da senha criptografada
-        //                    hashedPassword = hashedPassword.Substring(0, 60);
-        //                }
-
-        //                passwordsToUpdate.Add(new Tuple<int, string>(userId, hashedPassword));
-        //            }
-
-        //            reader.Close();
-
-        //            foreach (var passwordTuple in passwordsToUpdate)
-        //            {
-        //                int userId = passwordTuple.Item1;
-        //                string hashedPassword = passwordTuple.Item2;
-
-        //                using (var updateCmd = new SqlCommand("UPDATE tblUsuario SET senha_usuario = @hashedPassword WHERE cod_usuario = @userId", connection))
-        //                {
-        //                    updateCmd.Parameters.AddWithValue("@hashedPassword", hashedPassword);
-        //                    updateCmd.Parameters.AddWithValue("@userId", userId);
-        //                    updateCmd.ExecuteNonQuery();
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
 
 

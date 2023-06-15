@@ -175,10 +175,10 @@ namespace Spacebardesktop.Repositories
             return user;
         }
 
-        public static UserModel GetByIcon(int Icon)
+        public static UserModel GetByIcon(int userId)
         {
             UserModel user = null;
-            string query = "SELECT icon_usuario FROM tblUsuario WHERE login_usuario = @nomeUsuario";
+            string query = "SELECT icon_usuario FROM tblUsuario WHERE cod_usuario = @userId";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
 
             using (var connection = new SqlConnection(conexaoString))
@@ -186,7 +186,7 @@ namespace Spacebardesktop.Repositories
                 connection.Open();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@nomeUsuario", Icon);
+                    command.Parameters.AddWithValue("@userId", userId);
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())

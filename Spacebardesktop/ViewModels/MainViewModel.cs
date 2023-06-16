@@ -88,26 +88,15 @@ namespace Spacebardesktop.ViewModels
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-                if (user.Icon != null && user.Icon.Length > 0)
-                {
-                    using (MemoryStream stream = new MemoryStream(user.Icon))
-                    {
-                        BitmapImage image = new BitmapImage();
-                        image.BeginInit();
-                        image.CacheOption = BitmapCacheOption.OnLoad;
-                        image.StreamSource = stream;
-                        image.EndInit();
-
-                        CurrentUserAccount.ProfilePicture = image;
-                    }
-                }
+                        CurrentUserAccount.ProfilePicture = user.Icon;
+                
             }
-                  else
-                {
-                    CurrentUserAccount.DisplayName = "Usuário Inválido";
-                }
+            else
+            {
+                CurrentUserAccount.DisplayName = "Usuário Inválido";
             }
         }
     }
+}
 
  

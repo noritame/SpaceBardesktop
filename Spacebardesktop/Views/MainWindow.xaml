@@ -24,8 +24,6 @@
         </DataTemplate>
     </Window.Resources>
 
-   
-
 
     <Border  CornerRadius="10"                     
             BorderThickness="1">            
@@ -63,7 +61,7 @@
                     <StackPanel Orientation="Horizontal"
                                 Height="85"
                                 Margin="15,25,0,40" RenderTransformOrigin="0.529,0.541">
-                        <Image Source="/Imagens/logo_Icon.png" Height="56" Margin="40,0,10,0" />
+                        <Image Source="{Binding CurrentUserAccount.ProfilePicture}" Height="56" Margin="40,0,10,0" />
 
                     </StackPanel>
                     <!--Botãoes-->

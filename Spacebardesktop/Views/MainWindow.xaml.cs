@@ -27,7 +27,9 @@ namespace Spacebardesktop
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+            viewModel.LoadCurrentUserData();
         }
 
         [DllImport("user32.dll")]

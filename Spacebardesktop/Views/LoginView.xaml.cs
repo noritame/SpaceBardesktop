@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System.Data.SqlClient;
+using System.Data;
+using System.Drawing;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
 using Spacebardesktop.ViewModels;
@@ -38,14 +43,14 @@ namespace Spacebardesktop
             string nomeUsusarioType = txtUser.Text;
             UserRepository.GetByType(nomeUsusarioType);
             UserModel user = UserRepository.GetByIcon(nomeUsuario);
-
-            if(user != null)
+            if (user != null)
             {
-                viewModel.CurrentUserAccount.ProfilePicture = user.Icon;
+                byte[] imageData = viewModel.CurrentUserAccount.ProfilePicture as byte[];
+                if (imageData != null && imageData.Length > 0)
+                {
+                    user.Icon = imageData; // Atribua o imageData à propriedade Icon do objeto user
+                }
             }
-
-            LoginViewModel loginView = new LoginViewModel();
-            loginView.ShowMainView();
         }
 
         private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)

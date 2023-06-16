@@ -58,7 +58,6 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowUserViewCommand { get; }
 
         public MainViewModel()
         {
@@ -69,9 +68,7 @@ namespace Spacebardesktop.ViewModels
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
-            //Default View
-            ExecuteShowUserViewCommand(null);
+          
             ExecuteShowHomeViewCommand(null);
             LoadCurrentUserData();
         }
@@ -82,14 +79,6 @@ namespace Spacebardesktop.ViewModels
             Caption = "Criar Post";
             Icon = IconChar.Pen;
         }
-
-        private void ExecuteShowUserViewCommand(object obj)
-        {
-            CurrentChildView = new UserViewModel();
-            Caption = "Configurações do usuario";
-            Icon = IconChar.User;
-        }
-
         public void LoadCurrentUserData()
         {
             var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
@@ -97,20 +86,25 @@ namespace Spacebardesktop.ViewModels
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-
-                // Obter o objeto UserModel com a imagem do perfil
-                if (user.Icon != null && user.Icon.Length > 0)
+                using (MemoryStream stream = new MemoryStream(user.Icon))
                 {
-                    // Atribua o array de bytes da imagem do perfil à propriedade ProfilePicture
-                    CurrentUserAccount.ProfilePicture = user.Icon;
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+
+                    // Atribuir o objeto BitmapImage à propriedade ProfilePicture
+                    CurrentUserAccount.ProfilePicture = image;
                 }
+
             }
             else
-                {
-                    CurrentUserAccount.DisplayName = "Usuário Inválido";
-                }
+            {
+                CurrentUserAccount.DisplayName = "Usuário Inválido";
             }
         }
     }
+}
 
  

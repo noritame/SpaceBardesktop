@@ -71,9 +71,15 @@ namespace Spacebardesktop.ViewModels
                     {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@titulo", titulo);
-                    cmd.Parameters.AddWithValue("@texto", texto);
+                    if (!string.IsNullOrEmpty(texto))
+                        cmd.Parameters.AddWithValue("@texto", texto);
+                    else
+                        cmd.Parameters.AddWithValue("@texto", DBNull.Value);
                     cmd.Parameters.AddWithValue("@data", dataAtual);
-                    cmd.Parameters.AddWithValue("@imagem", foto);
+                    if (foto != null && foto.Length > 0)
+                        cmd.Parameters.AddWithValue("@imagem", foto);
+                    else
+                        cmd.Parameters.AddWithValue("@imagem", DBNull.Value);
                     cmd.Parameters.AddWithValue("@id", user.Id);
                     cmd.ExecuteNonQuery();
                     }
@@ -84,6 +90,11 @@ namespace Spacebardesktop.ViewModels
 
         private byte[] GetFoto(string caminhoFoto)
         {
+            if (string.IsNullOrEmpty(caminhoFoto))
+            {
+                // Lidar com a situação de caminho da foto vazio
+                return null;
+            }
             byte[] foto;
             using (var stream = new FileStream(caminhoFoto, FileMode.Open, FileAccess.Read))
             {

@@ -15,7 +15,7 @@ namespace Spacebardesktop.Repositories
         public readonly string connectionString;
         public Repositorio()//conecxao com o sql.
         {
-            connectionString = "Server=DESKTOP-EUAA3BD;DataBase=SpaceBar;trusted_connection=true";
+            connectionString = "Server=Bastos;DataBase=SpaceBar;trusted_connection=true";
         }
         public SqlConnection GetConnection()
         {

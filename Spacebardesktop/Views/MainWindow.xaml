@@ -18,16 +18,11 @@
     </Window.DataContext>
 
     <Window.Resources>
-       
+
         <DataTemplate DataType="{x:Type viewModel:HomeViewModel}">
             <local:HomeView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type viewModel:UserViewModel}">
-            <local:UserView/>
-        </DataTemplate>
     </Window.Resources>
-
-   
 
 
     <Border  CornerRadius="10"                     
@@ -66,7 +61,7 @@
                     <StackPanel Orientation="Horizontal"
                                 Height="85"
                                 Margin="15,25,0,40" RenderTransformOrigin="0.529,0.541">
-                        <Image Source="/Imagens/logo_Icon.png" Height="56" Margin="40,0,10,0" />
+                        <Image Source="{Binding CurrentUserAccount.ProfilePicture}" Height="56" Margin="40,0,10,0" />
 
                     </StackPanel>
                     <!--Botãoes-->
@@ -79,14 +74,7 @@
                         </StackPanel>
                     </RadioButton>
 
-                    <RadioButton Style="{StaticResource menuButton}"
-                                 Tag="{StaticResource color8}"
-                                 Command="{Binding ShowUserViewCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <fa:IconImage Icon="Edit" Style="{StaticResource menuButtonIcon}" Height="24" Width="21"/>
-                            <TextBlock Text="Settings" Style="{StaticResource menuButtonText}"/>
-                        </StackPanel>
-                    </RadioButton>
+                
 
                 </StackPanel>
             </Border>
@@ -166,25 +154,27 @@
                                     FlowDirection="RightToLeft"
                                     VerticalAlignment="Center"
                                     Margin="0,0,10,0">
-                            <!--<Button Style="{StaticResource iconButton}"
-                                    Tag="{StaticResource color1}">
-                                <fa:IconImage Icon="AngleDown" Style="{StaticResource iconButtonIcon}"/>
-
-                            </Button>-->
+                        
                             <TextBlock Text="{Binding CurrentUserAccount.DisplayName}"
                                        Foreground="{StaticResource titleColor3}"
                                        FontSize="12"
                                        VerticalAlignment="Center"/>
-
-                            <Ellipse Height="35" Width="35"
+                            <Ellipse x:Name="elipse"
+                                Height="35" Width="35"
                                      Stroke="{StaticResource color2}"
                                      StrokeThickness="2"
                                      Margin="10,0,10,0">
                                 <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding CurrentUserAccount.ProfilePicture}"/>
+                                    <ImageBrush 
+                                        ImageSource="{Binding CurrentUserAccount.ProfilePicture}"/>
                                 </Ellipse.Fill>
                             </Ellipse>
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color4}"
+                                    x:Name ="btnLeave" Click="btnLeave_Click">
+                                <fa:IconImage Icon="Home" Style="{StaticResource iconButtonIcon}"/>
 
+                            </Button>
                         </StackPanel>
                     </Grid>
                     <ContentControl Content="{Binding CurrentChildView}"

@@ -11,8 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using BCrypt.Net;
-
-
+using System.ComponentModel;
+using System.Windows;
 
 namespace Spacebardesktop.ViewModels
 {
@@ -23,7 +23,7 @@ namespace Spacebardesktop.ViewModels
         private string _password;
         private string _errorManage;
         private bool _isViewVisible=true;
-        private UserRepository userRepository;  
+        private UserRepository userRepository;
 
         //Propriedades
         public string Username {
@@ -106,9 +106,8 @@ namespace Spacebardesktop.ViewModels
         {
             userRepository = new UserRepository();
             LoginCommand = new ViewModelCommand(ExecuteLoginCommand, CanExecuteLoginCommand);
-           
-
         }
+      
 
         public bool CanExecuteLoginCommand(object obj)//codigo de verificaçao de usuario.
         {
@@ -142,6 +141,18 @@ namespace Spacebardesktop.ViewModels
             {
                 ErrorManage = "* Usuário ou senha inválidos";
             }
+        }
+        public void ShowLoginView()
+        {
+            var loginViewModel = new MainViewModel();
+            var loginView = new MainWindow(loginViewModel);
+            loginView.Show();
+        }
+        public void ShowMainView()
+        {
+            var mainViewModel = new LoginViewModel();
+            var mainWindow = new LoginView();
+            mainWindow.Show();
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Runtime;
 using System.Runtime.InteropServices;
 using System.Windows.Interop;
+using Spacebardesktop.ViewModels;
 
 namespace Spacebardesktop
 {
@@ -26,7 +27,9 @@ namespace Spacebardesktop
         {
             InitializeComponent();
             this.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
-
+            MainViewModel viewModel = new MainViewModel();
+            DataContext = viewModel;
+            viewModel.LoadCurrentUserData();
         }
 
         [DllImport("user32.dll")]
@@ -62,6 +65,14 @@ namespace Spacebardesktop
         private void RadioButton_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btnLeave_Click(object sender, RoutedEventArgs e)
+        {
+            var loginViewModel = new LoginViewModel();
+            loginViewModel.ShowLoginView();
+            // Feche a janela atual, se necessário
+            this.Close();
         }
     }
 }

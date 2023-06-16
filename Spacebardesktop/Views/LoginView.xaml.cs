@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Input;
+using Spacebardesktop.Models;
 using Spacebardesktop.Repositories;
 using Spacebardesktop.ViewModels;
 
@@ -12,10 +13,11 @@ namespace Spacebardesktop
 
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private MainViewModel viewModel;    
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
-            
+            this.viewModel = viewModel;
         }
 
         private void btnMinimize_Click(object sender, RoutedEventArgs e)
@@ -30,11 +32,20 @@ namespace Spacebardesktop
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
         {
+            viewModel.LoadCurrentUserData();
             string nomeUsuario = txtUser.Text;
             HomeViewModel.GetById(nomeUsuario);
             string nomeUsusarioType = txtUser.Text;
             UserRepository.GetByType(nomeUsusarioType);
-            
+            UserModel user = UserRepository.GetByIcon(nomeUsuario);
+
+            if(user != null)
+            {
+                viewModel.CurrentUserAccount.ProfilePicture = user.Icon;
+            }
+
+            LoginViewModel loginView = new LoginViewModel();
+            loginView.ShowMainView();
         }
 
         private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)

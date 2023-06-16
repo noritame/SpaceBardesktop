@@ -16,7 +16,8 @@ namespace Spacebardesktop
     {
         protected void ApplicationStart(object sender, StartupEventArgs e)
         {
-            var mainWindow = new MainWindow();
+            var mainViewModel = new MainViewModel();
+            var mainWindow = new MainWindow(mainViewModel);
             mainWindow.Show();
             mainWindow.IsVisibleChanged += (s, ev) =>
             {

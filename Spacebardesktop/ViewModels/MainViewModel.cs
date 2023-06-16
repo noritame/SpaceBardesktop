@@ -58,7 +58,6 @@ namespace Spacebardesktop.ViewModels
 
         //comandos
         public ICommand ShowHomeViewCommand { get; }
-        public ICommand ShowUserViewCommand { get; }
 
         public MainViewModel()
         {
@@ -69,9 +68,7 @@ namespace Spacebardesktop.ViewModels
             //inicialização dos comandos
 
             ShowHomeViewCommand = new ViewModelCommand(ExecuteShowHomeViewCommand);
-            ShowUserViewCommand = new ViewModelCommand(ExecuteShowUserViewCommand);
-            //Default View
-            ExecuteShowUserViewCommand(null);
+          
             ExecuteShowHomeViewCommand(null);
             LoadCurrentUserData();
         }
@@ -83,12 +80,6 @@ namespace Spacebardesktop.ViewModels
             Icon = IconChar.Pen;
         }
 
-        private void ExecuteShowUserViewCommand(object obj)
-        {
-            CurrentChildView = new UserViewModel();
-            Caption = "Configurações do usuario";
-            Icon = IconChar.User;
-        }
 
         public void LoadCurrentUserData()
         {
@@ -97,15 +88,21 @@ namespace Spacebardesktop.ViewModels
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-
-                // Obter o objeto UserModel com a imagem do perfil
                 if (user.Icon != null && user.Icon.Length > 0)
                 {
-                    // Atribua o array de bytes da imagem do perfil à propriedade ProfilePicture
-                    CurrentUserAccount.ProfilePicture = user.Icon;
+                    using (MemoryStream stream = new MemoryStream(user.Icon))
+                    {
+                        BitmapImage image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = stream;
+                        image.EndInit();
+
+                        CurrentUserAccount.ProfilePicture = image;
+                    }
                 }
             }
-            else
+                  else
                 {
                     CurrentUserAccount.DisplayName = "Usuário Inválido";
                 }

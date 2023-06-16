@@ -12,8 +12,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using BCrypt.Net;
+using System.Windows.Media;
 using System.Diagnostics.Contracts;
 using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace Spacebardesktop.Repositories
 {
@@ -175,10 +177,10 @@ namespace Spacebardesktop.Repositories
             return user;
         }
 
-        public static UserModel GetByIcon(int userId)
+        public static UserModel GetByIcon(string username)
         {
             UserModel user = null;
-            string query = "SELECT icon_usuario FROM tblUsuario WHERE cod_usuario = @userId";
+            string query = "SELECT icon_usuario FROM tblUsuario WHERE login_usuario = @username";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
 
             using (var connection = new SqlConnection(conexaoString))
@@ -186,7 +188,7 @@ namespace Spacebardesktop.Repositories
                 connection.Open();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@username", username);
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -194,21 +196,19 @@ namespace Spacebardesktop.Repositories
                             if (!reader.IsDBNull(reader.GetOrdinal("icon_usuario"))) // Verifica se a coluna não é nula
                             {
                                 byte[] imageData = (byte[])reader["icon_usuario"];
-                                // Atribua diretamente os dados da imagem do perfil ao UserModel
+
+                                // Atribui diretamente o array de bytes ao UserModel
                                 user = new UserModel
                                 {
                                     Icon = imageData
                                 };
-                            }
+                             }
+                           }
                         }
+                        return user;
                     }
                 }
             }
-
-            return user;
         }
-    
-
     }
-}
-    
+

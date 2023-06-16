@@ -25,7 +25,7 @@ namespace Spacebardesktop.ViewModels
         {
             _executeAction = executeAction;
             _canExecuteAction = canExecuteAction;
-        }
+        }   
 
         public event EventHandler CanExecuteChanged
         {

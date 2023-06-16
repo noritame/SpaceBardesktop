@@ -122,7 +122,8 @@ namespace Spacebardesktop.Repositories
         public UserModel GetByUsername(string username)
         {
             UserModel user = null;
-            using (var connection = GetConnection())
+            string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
+            using (var connection = new SqlConnection(conexaoString))
             using (var command = new SqlCommand())
             {
                 connection.Open();
@@ -177,10 +178,10 @@ namespace Spacebardesktop.Repositories
             return user;
         }
 
-        public static UserModel GetByIcon(int userId)
+        public static UserModel GetByIcon(string username)
         {
             UserModel user = null;
-            string query = "SELECT icon_usuario FROM tblUsuario WHERE cod_usuario = @userId";
+            string query = "SELECT icon_usuario FROM tblUsuario WHERE login_usuario = @username";
             string conexaoString = "Server=(local); Database=SpaceBar; Integrated Security=true";
 
             using (var connection = new SqlConnection(conexaoString))
@@ -188,7 +189,7 @@ namespace Spacebardesktop.Repositories
                 connection.Open();
                 using (var command = new SqlCommand(query, connection))
                 {
-                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@username", username);
                     using (var reader = command.ExecuteReader())
                     {
                         if (reader.Read())
@@ -207,11 +208,7 @@ namespace Spacebardesktop.Repositories
                     }
                 }
             }
-
             return user;
         }
-
     }
 }
-    
-

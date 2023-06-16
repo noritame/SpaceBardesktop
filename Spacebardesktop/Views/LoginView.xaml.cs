@@ -41,19 +41,47 @@ namespace Spacebardesktop
             string nomeUsuario = txtUser.Text;
             HomeViewModel.GetById(nomeUsuario);
             string nomeUsusarioType = txtUser.Text;
-            UserRepository.GetByType(nomeUsusarioType);
-            UserModel user = UserRepository.GetByIcon(nomeUsuario);
+            UserRepository.GetByType(nomeUsusarioType); 
+            UserRepository userRepository = new UserRepository();
+            UserModel user = userRepository.GetByUsername(nomeUsuario);
             if (user != null)
             {
-                byte[] imageData = viewModel.CurrentUserAccount.ProfilePicture as byte[];
-                if (imageData != null && imageData.Length > 0)
+                // Atualizar a propriedade CurrentUserAccount com os dados do usuário
+                viewModel.CurrentUserAccount.Username = user.Username;
+                viewModel.CurrentUserAccount.DisplayName = $"{user.Username}";
+
+                // Verificar se o usuário tem um ícone definido
+                if (user.Icon != null && user.Icon.Length > 0)
                 {
-                    user.Icon = imageData; // Atribua o imageData à propriedade Icon do objeto user
+                    using (MemoryStream stream = new MemoryStream(user.Icon))
+                    {
+                        BitmapImage image = new BitmapImage();
+                        image.BeginInit();
+                        image.CacheOption = BitmapCacheOption.OnLoad;
+                        image.StreamSource = stream;
+                        image.EndInit();
+
+                        // Atribuir o objeto BitmapImage à propriedade ProfilePicture
+                        viewModel.CurrentUserAccount.ProfilePicture = image;
+                    }
                 }
+                else
+                {
+                    // Definir uma imagem padrão ou deixar em branco, caso não haja imagem do usuário
+                    viewModel.CurrentUserAccount.ProfilePicture = null;
+                }
+            }
+            else
+            {
+                // Usuário inválido
+                viewModel.CurrentUserAccount.DisplayName = "Usuário Inválido";
             }
         }
 
-        private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)
+
+    
+
+    private void BindablePasswordBox_Loaded(object sender, RoutedEventArgs e)
         {
 
         }

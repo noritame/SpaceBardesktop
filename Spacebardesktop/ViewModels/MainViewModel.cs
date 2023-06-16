@@ -79,8 +79,6 @@ namespace Spacebardesktop.ViewModels
             Caption = "Criar Post";
             Icon = IconChar.Pen;
         }
-
-
         public void LoadCurrentUserData()
         {
             var user = userRepository.GetByUsername(Thread.CurrentPrincipal.Identity.Name);
@@ -88,8 +86,18 @@ namespace Spacebardesktop.ViewModels
             {
                 CurrentUserAccount.Username = user.Username;
                 CurrentUserAccount.DisplayName = $"{user.Username}";
-                        CurrentUserAccount.ProfilePicture = user.Icon;
-                
+                using (MemoryStream stream = new MemoryStream(user.Icon))
+                {
+                    BitmapImage image = new BitmapImage();
+                    image.BeginInit();
+                    image.CacheOption = BitmapCacheOption.OnLoad;
+                    image.StreamSource = stream;
+                    image.EndInit();
+
+                    // Atribuir o objeto BitmapImage à propriedade ProfilePicture
+                    CurrentUserAccount.ProfilePicture = image;
+                }
+
             }
             else
             {
